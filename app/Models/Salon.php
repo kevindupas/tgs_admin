@@ -72,4 +72,29 @@ class Salon extends Model
     {
         return $this->hasMany(Categorie::class);
     }
+
+    public function availabilities(): HasMany
+    {
+        return $this->hasMany(Availability::class);
+    }
+
+    public function faqs(): HasMany
+    {
+        return $this->hasMany(Faq::class);
+    }
+
+    public function practicalInfos(): HasMany
+    {
+        return $this->hasMany(PracticalInfo::class);
+    }
+
+    public function partners(): HasMany
+    {
+        return $this->hasMany(Partner::class);
+    }
+
+    public function ticketPrices(): HasMany
+    {
+        return $this->hasMany(TicketPrice::class);
+    }
 }
