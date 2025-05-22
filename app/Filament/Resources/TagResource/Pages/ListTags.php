@@ -13,7 +13,15 @@ class ListTags extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+                ->label('Créer un filtre')
+                ->icon('heroicon-o-plus')
+                ->color('primary'),
         ];
+    }
+
+    public function getTitle(): string
+    {
+        return 'Liste des filtres';
     }
 }

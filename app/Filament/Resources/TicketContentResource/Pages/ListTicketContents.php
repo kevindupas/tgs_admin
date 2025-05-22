@@ -13,7 +13,12 @@ class ListTicketContents extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()->label('Créer un contenu de ticket'),
         ];
+    }
+
+    public function getTitle(): string
+    {
+        return 'Liste des contenus de ticket';
     }
 }

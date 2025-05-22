@@ -16,6 +16,17 @@ class TagResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-hashtag';
 
+    protected static ?string $navigationGroup = 'Contenu global';
+
+    // Labels en français
+    protected static ?string $navigationLabel = 'Filtres';
+    protected static ?string $modelLabel = 'Filtre';
+    protected static ?string $pluralModelLabel = 'Filtres';
+
+    protected static ?string $slug = 'filters';
+
+    protected static ?int $navigationSort = 2;
+
     protected static ?string $recordTitleAttribute = 'name';
 
     // Crucial: Les tags ne sont PAS scopés aux tenants
@@ -49,12 +60,12 @@ class TagResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()->label('Modifier'),
+                Tables\Actions\DeleteAction::make()->label('Supprimer'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()->label('Supprimer'),
                 ]),
             ]);
     }

@@ -13,7 +13,15 @@ class ListPracticalInfos extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+                ->label('Créer une information pratique')
+                ->icon('heroicon-o-plus')
+                ->color('primary'),
         ];
+    }
+
+    public function getTitle(): string
+    {
+        return 'Liste des informations pratiques';
     }
 }

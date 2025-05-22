@@ -97,4 +97,37 @@ class Salon extends Model
     {
         return $this->hasMany(TicketPrice::class);
     }
+
+    public function articles(): BelongsToMany
+    {
+        return $this->belongsToMany(Article::class, 'article_salon')
+            ->withPivot([
+                'category_id',
+                'availability_id',
+                'is_featured',
+                'is_published',
+                'published_at',
+                'is_scheduled',
+                'is_cancelled',
+                'schedule_content',
+                'display_order',
+            ])
+            ->withTimestamps();
+    }
+
+    // Articles avec planning
+    public function scheduledArticles()
+    {
+        return $this->articles()
+            ->wherePivot('is_scheduled', true)
+            ->orderBy('start_datetime');
+    }
+
+    // Articles mis en avant
+    public function featuredArticles()
+    {
+        return $this->articles()
+            ->wherePivot('is_featured', true)
+            ->orderBy('pivot_display_order');
+    }
 }

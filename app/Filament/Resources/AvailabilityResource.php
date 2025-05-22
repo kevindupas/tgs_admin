@@ -18,7 +18,17 @@ class AvailabilityResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-calendar';
 
+    protected static ?string $navigationGroup = 'Gestion du salon';
+
+    protected static ?string $navigationLabel = 'Disponibilités';
+
     protected static ?string $recordTitleAttribute = 'name';
+
+    protected static ?int $navigationSort = 2;
+
+    protected static ?string $label = 'Disponibilité';
+    protected static ?string $pluralLabel = 'Disponibilités';
+
 
     public static function form(Form $form): Form
     {

@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\PracticalInfoResource\Pages;
+namespace App\Filament\Resources\ArticleResource\Pages;
 
-use App\Filament\Resources\PracticalInfoResource;
+use App\Filament\Resources\ArticleResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditPracticalInfo extends EditRecord
+class EditArticle extends EditRecord
 {
-    protected static string $resource = PracticalInfoResource::class;
+    protected static string $resource = ArticleResource::class;
 
     protected function getHeaderActions(): array
     {
@@ -19,7 +19,7 @@ class EditPracticalInfo extends EditRecord
 
     public function getTitle(): string
     {
-        return 'Modifier l\'information pratique : ' . $this->record->title;
+        return 'Modifier l\'article : ' . $this->record->title;
     }
 
     protected function getRedirectUrl(): string

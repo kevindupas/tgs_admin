@@ -11,6 +11,7 @@ use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Navigation\MenuItem;
+use Filament\Navigation\NavigationGroup;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -36,6 +37,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->profile()
             ->colors([
                 'primary' => Color::Blue,
             ])
@@ -67,6 +69,13 @@ class AdminPanelProvider extends PanelProvider
             ->tenantMenuItems([
                 'register' => MenuItem::make()->label('Nouveau salon'),
             ])
+            ->navigationGroups([
+                NavigationGroup::make()
+                    ->label('Contenu global'),
+                NavigationGroup::make()
+                    ->label('Gestion du salon')
+                    ->collapsed(),
+            ])
             // Configuration standard
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
@@ -82,6 +91,9 @@ class AdminPanelProvider extends PanelProvider
             ->plugins([
                 // Votre configuration FilamentMediaLibrary existante
                 FilamentMediaLibrary::make()
+                    ->navigationLabel('Manager les médias')
+                    ->pageTitle('Manager les médias')
+                    // ->navigationSort(1)
                     ->mediaPickerModalWidth('7xl')
                     ->showUploadBoxByDefault()
                     ->thumbnailMediaConversion('thumb')

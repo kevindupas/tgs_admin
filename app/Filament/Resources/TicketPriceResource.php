@@ -19,9 +19,13 @@ class TicketPriceResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-currency-euro';
 
-    protected static ?string $navigationLabel = 'Prix des billets';
+    protected static ?string $navigationGroup = 'Gestion du salon';
+
+    protected static ?string $navigationLabel = 'Configuration des billets';
 
     protected static ?string $recordTitleAttribute = 'name';
+
+    protected static ?int $navigationSort = 7;
 
     public static function form(Form $form): Form
     {

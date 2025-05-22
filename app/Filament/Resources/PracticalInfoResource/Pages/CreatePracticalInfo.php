@@ -9,4 +9,14 @@ use Filament\Resources\Pages\CreateRecord;
 class CreatePracticalInfo extends CreateRecord
 {
     protected static string $resource = PracticalInfoResource::class;
+
+    public function getTitle(): string
+    {
+        return 'Créer une information pratique';
+    }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

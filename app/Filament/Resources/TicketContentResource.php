@@ -16,9 +16,16 @@ class TicketContentResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-ticket';
 
+    protected static ?string $navigationGroup = 'Contenu global';
+
     protected static ?string $navigationLabel = 'Contenu des billets';
 
+    protected static ?string $modelLabel = 'Contenu des billets';
+    protected static ?string $pluralModelLabel = 'Contenu des billets';
+
     protected static ?string $recordTitleAttribute = 'name';
+
+    protected static ?int $navigationSort = 3;
 
     // Important : ne pas scoper aux tenants car c'est global
     protected static bool $isScopedToTenant = false;

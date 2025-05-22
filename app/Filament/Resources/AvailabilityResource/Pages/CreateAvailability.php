@@ -9,4 +9,14 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateAvailability extends CreateRecord
 {
     protected static string $resource = AvailabilityResource::class;
+
+    public function getTitle(): string
+    {
+        return 'Créer un disponibilité';
+    }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

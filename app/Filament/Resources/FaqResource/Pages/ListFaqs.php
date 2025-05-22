@@ -13,7 +13,15 @@ class ListFaqs extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+                ->label('Créer une FAQ')
+                ->icon('heroicon-o-plus')
+                ->color('primary'),
         ];
+    }
+
+    public function getTitle(): string
+    {
+        return 'Liste des questions fréquentes';
     }
 }

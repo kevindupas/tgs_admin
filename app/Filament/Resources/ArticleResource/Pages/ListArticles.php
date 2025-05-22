@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Filament\Resources\AvailabilityResource\Pages;
+namespace App\Filament\Resources\ArticleResource\Pages;
 
-use App\Filament\Resources\AvailabilityResource;
+use App\Filament\Resources\ArticleResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
-class ListAvailabilities extends ListRecords
+class ListArticles extends ListRecords
 {
-    protected static string $resource = AvailabilityResource::class;
+    protected static string $resource = ArticleResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
             Actions\CreateAction::make()
-                ->label('Créer une disponibilité')
+                ->label('Créer un article')
                 ->icon('heroicon-o-plus')
                 ->color('primary'),
         ];

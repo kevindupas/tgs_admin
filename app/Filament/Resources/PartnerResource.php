@@ -19,7 +19,13 @@ class PartnerResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office';
 
+    protected static ?string $navigationGroup = 'Gestion du salon';
+
+    protected static ?string $navigationLabel = 'Partenaires';
+
     protected static ?string $recordTitleAttribute = 'name';
+
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {
