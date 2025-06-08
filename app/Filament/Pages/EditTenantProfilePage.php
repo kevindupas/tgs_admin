@@ -160,6 +160,28 @@ class EditTenantProfilePage extends EditTenantProfile
                                 TiptapEditor::make('about_us')->label('À propos de nous'),
                                 TiptapEditor::make('practical_info')->label('Informations pratiques'),
                             ]),
+                        Tabs\Tab::make('Pages spéciales')
+                            ->schema([
+                                Toggle::make('show_presses')
+                                    ->label('Afficher la page Presse')
+                                    ->helperText('Active la page Presse dans la navigation')
+                                    ->default(false),
+
+                                Toggle::make('show_photos_invites')
+                                    ->label('Afficher la page Photos Invités')
+                                    ->helperText('Active la page Photos Invités dans la navigation')
+                                    ->default(false),
+
+                                Toggle::make('show_become_an_exhibitor')
+                                    ->label('Afficher la page Devenir Exposant')
+                                    ->helperText('Active la page Devenir Exposant dans la navigation')
+                                    ->default(false),
+
+                                Toggle::make('show_become_a_staff')
+                                    ->label('Afficher la page Devenir Staff')
+                                    ->helperText('Active la page Devenir Staff dans la navigation')
+                                    ->default(false),
+                            ]),
 
                         Tabs\Tab::make('E2C')
                             ->schema([
@@ -171,5 +193,11 @@ class EditTenantProfilePage extends EditTenantProfile
                     ])
                     ->columnSpan('full'),
             ]);
+    }
+
+    protected function afterSave(): void
+    {
+        // Rafraîchir la page après sauvegarde pour mettre à jour la navigation
+        $this->js('window.location.reload()');
     }
 }

@@ -55,7 +55,7 @@ class Article extends Model
     }
 
     // Relation spécifique pour un salon donné, avec paramètre optionnel
-    public function salon(Salon $salon)
+    public function salon(?Salon $salon = null)
     {
         // Si aucun salon n'est fourni, essayer de récupérer le salon courant de Filament
         if ($salon === null) {
@@ -79,7 +79,7 @@ class Article extends Model
     }
 
     // Raccourci pour obtenir les articles d'un salon
-    public static function forSalon(Salon $salon)
+    public static function forSalon(?Salon $salon = null)
     {
         // Si aucun salon n'est fourni, essayer de récupérer le salon courant de Filament
         if ($salon === null) {
@@ -112,13 +112,4 @@ class Article extends Model
 
         return is_array($this->gallery) ? $this->gallery : [];
     }
-
-    // public function getVideosArrayAttribute()
-    // {
-    //     if (is_string($this->videos)) {
-    //         return json_decode($this->videos, true) ?? [];
-    //     }
-
-    //     return is_array($this->videos) ? $this->videos : [];
-    // }
 }

@@ -6,6 +6,7 @@ use Filament\Models\Contracts\HasAvatar;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Salon extends Model
@@ -47,20 +48,22 @@ class Salon extends Model
         'presse_kit',
         'about_us',
         'practical_info',
+        'show_presses',
+        'show_photos_invites',
+        'show_become_an_exhibitor',
+        'show_become_a_staff',
         'e2c'
     ];
 
-    // public function getFilamentAvatarUrl(): ?string
-    // {
-    //     return $this->eventLogo ? $this->eventLogo->getUrl('thumb') : null;
-    // }
+    protected $casts = [
+        'e2c' => 'boolean',
+        'show_presses' => 'boolean',
+        'show_photos_invites' => 'boolean',
+        'show_become_an_exhibitor' => 'boolean',
+        'show_become_a_staff' => 'boolean',
+        'countdown' => 'datetime',
+    ];
 
-    // public function eventLogo()
-    // {
-    //     return $this->belongsTo(Media::class, 'event_logo');
-    // }
-
-    // // Et modifier getFilamentAvatarUrl pour utiliser cette relation
     public function getFilamentAvatarUrl(): ?string
     {
         return $this->eventLogo ? $this->eventLogo->getUrl('thumb') : null;
@@ -122,6 +125,48 @@ class Salon extends Model
                 'display_order',
             ])
             ->withTimestamps();
+    }
+
+    // Relations E2C
+    public function e2cContent(): HasOne
+    {
+        return $this->hasOne(E2cContent::class);
+    }
+
+    public function e2cArticles(): HasMany
+    {
+        return $this->hasMany(E2cArticle::class);
+    }
+
+    public function e2cJury(): HasMany
+    {
+        return $this->hasMany(E2cArticle::class)->where('is_jury', true);
+    }
+
+    public function e2cParticipants(): HasMany
+    {
+        return $this->hasMany(E2cArticle::class)->where('is_jury', false);
+    }
+
+    // Pages spéciales
+    public function presse(): HasOne
+    {
+        return $this->hasOne(Presse::class);
+    }
+
+    public function photosInvites(): HasOne
+    {
+        return $this->hasOne(PhotosInvite::class);
+    }
+
+    public function becomeAnExhibitor(): HasOne
+    {
+        return $this->hasOne(BecomeAnExhibitor::class);
+    }
+
+    public function becomeAStaff(): HasOne
+    {
+        return $this->hasOne(BecomeAStaff::class);
     }
 
     // Articles avec planning

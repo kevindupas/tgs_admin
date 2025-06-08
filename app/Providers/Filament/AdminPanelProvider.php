@@ -75,6 +75,12 @@ class AdminPanelProvider extends PanelProvider
                 NavigationGroup::make()
                     ->label('Gestion du salon')
                     ->collapsed(),
+                NavigationGroup::make()
+                    ->label('Pages spéciales')
+                    ->collapsed(),
+                NavigationGroup::make()
+                    ->label('E2C')
+                    ->collapsed(),
             ])
             // Configuration standard
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')

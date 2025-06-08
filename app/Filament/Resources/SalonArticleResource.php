@@ -15,6 +15,7 @@ use Filament\Tables\Table;
 use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use RalphJSmit\Filament\MediaLibrary\Forms\Components\MediaPicker;
 
 class SalonArticleResource extends Resource
 {
@@ -102,6 +103,41 @@ class SalonArticleResource extends Resource
                                     ->default(false)
                                     ->visible(fn(Forms\Get $get) => $get('is_scheduled')),
                             ]),
+                        Forms\Components\Tabs\Tab::make('Contenu personnalisé')
+                            ->schema([
+                                TiptapEditor::make('content_salon')
+                                    ->label('Contenu personnalisé pour ce salon')
+                                    ->helperText('Si rempli, ce contenu remplacera le contenu original de l\'article pour ce salon uniquement')
+                                    ->columnSpanFull(),
+                            ]),
+                        Forms\Components\Tabs\Tab::make('Galerie personnalisée')
+                            ->schema([
+                                MediaPicker::make('gallery_salon')
+                                    ->label('Galerie personnalisée pour ce salon')
+                                    ->helperText('Images spécifiques à ce salon qui s\'ajouteront ou remplaceront la galerie originale')
+                                    ->multiple()
+                                    ->reorderable()
+                                    ->columnSpanFull(),
+                            ]),
+                        Forms\Components\Tabs\Tab::make('Videos personnalisé')
+                            ->schema([
+                                Forms\Components\Repeater::make('videos_salon')
+                                    ->label('Vidéos personnalisées pour ce salon')
+                                    ->helperText('Vidéos spécifiques à ce salon')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('url')
+                                            ->label('URL de la vidéo')
+                                            ->url()
+                                            ->required(),
+                                        Forms\Components\TextInput::make('title')
+                                            ->label('Titre de la vidéo')
+                                            ->maxLength(255),
+                                    ])
+                                    ->reorderableWithDragAndDrop()
+                                    ->collapsible()
+                                    ->itemLabel(fn(array $state): string => $state['title'] ?? $state['url'] ?? 'Vidéo')
+                                    ->columnSpanFull(),
+                            ]),
 
                     ])
                     ->columnSpanFull(),
@@ -185,6 +221,20 @@ class SalonArticleResource extends Resource
                         return $salonRelation ? $salonRelation->pivot->is_scheduled : false;
                     }),
 
+                Tables\Columns\IconColumn::make('has_custom_content')
+                    ->label('Personnalisé')
+                    ->boolean()
+                    ->getStateUsing(function ($record) use ($salon) {
+                        $salonRelation = $record->salons->where('id', $salon->id)->first();
+                        if (!$salonRelation) return false;
+
+                        $pivot = $salonRelation->pivot;
+                        return !empty($pivot->content_salon) ||
+                            !empty($pivot->gallery_salon) ||
+                            !empty($pivot->videos_salon);
+                    })
+                    ->icon(fn($state) => $state ? 'heroicon-o-pencil-square' : 'heroicon-o-document'),
+
                 Tables\Columns\TextColumn::make('published_at')
                     ->label('Date de publication')
                     ->dateTime()
@@ -221,6 +271,25 @@ class SalonArticleResource extends Resource
                         }),
                         false: fn(Builder $query) => $query->whereHas('salons', function ($q) use ($salon) {
                             $q->where('salon_id', $salon->id)->where('is_scheduled', false);
+                        }),
+                        blank: fn(Builder $query) => $query,
+                    ),
+                Tables\Filters\TernaryFilter::make('has_custom_content')
+                    ->label('Contenu personnalisé')
+                    ->queries(
+                        true: fn(Builder $query) => $query->whereHas('salons', function ($q) use ($salon) {
+                            $q->where('salon_id', $salon->id)
+                                ->where(function ($subQuery) {
+                                    $subQuery->whereNotNull('content_salon')
+                                        ->orWhereNotNull('gallery_salon')
+                                        ->orWhereNotNull('videos_salon');
+                                });
+                        }),
+                        false: fn(Builder $query) => $query->whereHas('salons', function ($q) use ($salon) {
+                            $q->where('salon_id', $salon->id)
+                                ->whereNull('content_salon')
+                                ->whereNull('gallery_salon')
+                                ->whereNull('videos_salon');
                         }),
                         blank: fn(Builder $query) => $query,
                     ),
@@ -261,6 +330,9 @@ class SalonArticleResource extends Resource
                             'is_cancelled' => (bool) $pivot->is_cancelled,
                             'schedule_content' => $pivot->schedule_content,
                             'display_order' => (int) $pivot->display_order,
+                            'content_salon' => $pivot->content_salon,
+                            'gallery_salon' => $pivot->gallery_salon ? json_decode($pivot->gallery_salon, true) : [],
+                            'videos_salon' => $pivot->videos_salon ? json_decode($pivot->videos_salon, true) : [],
                         ];
                     })
                     ->action(function (Model $record, array $data) use ($salon): void {
@@ -275,6 +347,9 @@ class SalonArticleResource extends Resource
                             'is_cancelled',
                             'schedule_content',
                             'display_order',
+                            'content_salon',
+                            'gallery_salon',
+                            'videos_salon',
                         ])->filter(function ($value) {
                             return $value !== null;
                         })->toArray();
@@ -291,6 +366,14 @@ class SalonArticleResource extends Resource
                         }
                         if (isset($pivotData['is_cancelled'])) {
                             $pivotData['is_cancelled'] = (int) $pivotData['is_cancelled'];
+                        }
+
+                        // Convertir les arrays en JSON pour la base de données
+                        if (isset($pivotData['gallery_salon']) && is_array($pivotData['gallery_salon'])) {
+                            $pivotData['gallery_salon'] = json_encode($pivotData['gallery_salon']);
+                        }
+                        if (isset($pivotData['videos_salon']) && is_array($pivotData['videos_salon'])) {
+                            $pivotData['videos_salon'] = json_encode($pivotData['videos_salon']);
                         }
 
                         $record->salons()->updateExistingPivot($salon->id, $pivotData);
