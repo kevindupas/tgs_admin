@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('become_an_exhibitor', function (Blueprint $table) {
+        Schema::create('become_an_exhibitors', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->longText('content');
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('become_an_exhibitor');
+        Schema::dropIfExists('become_an_exhibitors');
     }
 };

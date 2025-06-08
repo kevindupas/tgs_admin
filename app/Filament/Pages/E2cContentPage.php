@@ -26,6 +26,8 @@ class E2cContentPage extends Page
 
     public ?array $data = [];
 
+    public ?E2cContent $e2cContent = null;
+
     public function mount(): void
     {
         $salon = Filament::getTenant();
