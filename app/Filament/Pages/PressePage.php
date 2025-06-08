@@ -75,6 +75,7 @@ class PressePage extends Page
                         TiptapEditor::make('first_content')
                             ->label('Premier contenu')
                             ->required()
+                            ->profile('default')
                             ->columnSpanFull(),
 
                         Forms\Components\TextInput::make('second_title')

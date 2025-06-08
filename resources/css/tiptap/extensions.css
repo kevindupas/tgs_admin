@@ -1,0 +1,9 @@
+
+/* resources/css/tiptap/extensions.css */
+.tiptap-content {
+    /* Styles pour les différentes tailles de police */
+}
+
+.tiptap-content [style*="font-size"] {
+    /* Assurer que les tailles de police sont respectées */
+}

@@ -18,6 +18,7 @@ return [
     */
     'profiles' => [
         'default' => [
+            'fontSize',
             'heading',
             'bullet-list',
             'ordered-list',
@@ -51,8 +52,8 @@ return [
             'source',
             'blocks',
         ],
-        'simple' => ['heading', 'hr', 'bullet-list', 'ordered-list', 'checked-list', '|', 'bold', 'italic', 'lead', 'small', '|', 'link', 'media'],
-        'minimal' => ['bold', 'italic', 'link', 'bullet-list', 'ordered-list'],
+        'simple' => ['fontSize', 'heading', 'hr', 'bullet-list', 'ordered-list', 'checked-list', '|', 'bold', 'italic', 'lead', 'small', '|', 'link', 'media'],
+        'minimal' => ['fontSize', 'bold', 'italic', 'link', 'bullet-list', 'ordered-list'],
         'none' => [],
     ],
 
@@ -124,9 +125,16 @@ return [
     |--------------------------------------------------------------------------
     |
     */
-    'extensions_script' => null,
-    'extensions_styles' => null,
-    'extensions' => [],
+    'extensions_script' => 'resources/js/tiptap/extensions.js',
+    'extensions_styles' => 'resources/css/tiptap/extensions.css',
+    'extensions' => [
+        [
+            'id' => 'fontSize',
+            'name' => 'Font Size',
+            'button' => 'filament-tiptap-editor::tools.font-size',
+            'parser' => \App\TiptapExtensions\FontSize::class,
+        ],
+    ],
 
     /*
     |--------------------------------------------------------------------------
