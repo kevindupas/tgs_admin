@@ -47,6 +47,7 @@ class Salon extends Model
         'presse_kit',
         'about_us',
         'practical_info',
+        'e2c'
     ];
 
     // public function getFilamentAvatarUrl(): ?string

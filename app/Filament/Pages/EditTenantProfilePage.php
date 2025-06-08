@@ -10,6 +10,7 @@ use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\ColorPicker;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Pages\Tenancy\EditTenantProfile;
 use FilamentTiptapEditor\Enums\TiptapOutput;
@@ -158,6 +159,14 @@ class EditTenantProfilePage extends EditTenantProfile
                             ->schema([
                                 TiptapEditor::make('about_us')->label('À propos de nous'),
                                 TiptapEditor::make('practical_info')->label('Informations pratiques'),
+                            ]),
+
+                        Tabs\Tab::make('E2C')
+                            ->schema([
+                                Toggle::make('e2c')
+                                    ->label('E2C')
+                                    ->helperText('Si vous souhaitez afficher le E2C, veuillez activer cette option')
+                                    ->default(false),
                             ]),
                     ])
                     ->columnSpan('full'),

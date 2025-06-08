@@ -65,6 +65,9 @@ return new class extends Migration
             $table->text('about_us')->nullable();
             $table->text('practical_info')->nullable();
 
+            // E2C
+            $table->boolean('e2c')->default(false);
+
             $table->timestamps();
         });
 
