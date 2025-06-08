@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Pages\EditTenantProfilePage;
 use App\Filament\Pages\RegisterTenant;
+use App\Http\Middleware\TrustProxies;
 use App\Models\Salon;
 use Filament\Facades\Filament;
 use Filament\Http\Middleware\Authenticate;
@@ -121,6 +122,7 @@ class AdminPanelProvider extends PanelProvider
                     )
             ])
             ->middleware([
+                TrustProxies::class,
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
                 StartSession::class,
