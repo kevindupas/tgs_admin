@@ -21,6 +21,11 @@ return new class extends Migration
             $table->boolean('is_published')->default(true);
             $table->timestamp('published_at')->nullable();
 
+            // Champs pour le contenu spécifique au salon
+            $table->text('content_salon')->nullable();
+            $table->json('gallery_salon')->nullable();
+            $table->json('videos_salon')->nullable();
+
             // Champs pour le planning
             $table->boolean('is_scheduled')->default(false);
             $table->boolean('is_cancelled')->default(false);

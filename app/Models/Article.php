@@ -43,6 +43,9 @@ class Article extends Model
                 'is_featured',
                 'is_published',
                 'published_at',
+                'content_salon',
+                'gallery_salon',
+                'videos_salon',
                 'is_scheduled',
                 'is_cancelled',
                 'schedule_content',
@@ -52,7 +55,7 @@ class Article extends Model
     }
 
     // Relation spécifique pour un salon donné, avec paramètre optionnel
-    public function salon(Salon $salon = null)
+    public function salon(Salon $salon)
     {
         // Si aucun salon n'est fourni, essayer de récupérer le salon courant de Filament
         if ($salon === null) {
@@ -76,7 +79,7 @@ class Article extends Model
     }
 
     // Raccourci pour obtenir les articles d'un salon
-    public static function forSalon(Salon $salon = null)
+    public static function forSalon(Salon $salon)
     {
         // Si aucun salon n'est fourni, essayer de récupérer le salon courant de Filament
         if ($salon === null) {

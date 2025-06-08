@@ -54,13 +54,7 @@ class SalonArticleResource extends Resource
                                     ->searchable()
                                     ->required()
                                     ->preload()
-                                    ->disabled(fn($context) => $context === 'edit')
-                                    ->hiddenOn('edit'),
-
-                                Forms\Components\Placeholder::make('article_info')
-                                    ->label('Article')
-                                    ->content(fn($record) => $record?->title ?? 'Aucun article sélectionné')
-                                    ->visibleOn('edit'),
+                                    ->default(fn($record) => $record?->id), // Valeur par défaut en édition
 
                                 Forms\Components\Select::make('category_id')
                                     ->label('Catégorie')
@@ -120,34 +114,95 @@ class SalonArticleResource extends Resource
 
         return $table
             ->columns([
+
+                Tables\Columns\ImageColumn::make('featured_image')
+                    ->label('Image')
+                    ->height(60)
+                    ->getStateUsing(function ($record) {
+                        if (!$record->featured_image) {
+                            return null;
+                        }
+
+                        // Si c'est juste un ID, récupérer l'objet Media et son URL
+                        if (is_numeric($record->featured_image)) {
+                            $media = \Spatie\MediaLibrary\MediaCollections\Models\Media::find($record->featured_image);
+                            return $media ? $media->getUrl('thumb') : null;
+                        }
+
+                        // Si c'est déjà une URL ou un chemin, le retourner tel quel
+                        return $record->featured_image;
+                    })
+                    ->defaultImageUrl(null),
+
                 Tables\Columns\TextColumn::make('title')
                     ->label('Titre')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('pivot.category_id')
+
+                Tables\Columns\TextColumn::make('category_name')
                     ->label('Catégorie')
-                    ->formatStateUsing(function ($state) {
-                        if (!$state) return 'Aucune';
-                        $category = Categorie::find($state);
+                    ->getStateUsing(function ($record) use ($salon) {
+                        $salonRelation = $record->salons->where('id', $salon->id)->first();
+                        if (!$salonRelation || !$salonRelation->pivot->category_id) {
+                            return 'Aucune';
+                        }
+                        $category = Categorie::find($salonRelation->pivot->category_id);
                         return $category ? $category->name : 'Inconnue';
                     }),
-                Tables\Columns\IconColumn::make('pivot.is_featured')
+
+                Tables\Columns\TextColumn::make('availability_name')
+                    ->label('Disponibilité')
+                    ->getStateUsing(function ($record) use ($salon) {
+                        $salonRelation = $record->salons->where('id', $salon->id)->first();
+                        if (!$salonRelation || !$salonRelation->pivot->availability_id) {
+                            return 'Aucune';
+                        }
+                        $availability = Availability::find($salonRelation->pivot->availability_id);
+                        return $availability ? $availability->name : 'Inconnue';
+                    }),
+
+                Tables\Columns\IconColumn::make('is_featured')
                     ->label('En avant')
-                    ->boolean(),
-                Tables\Columns\IconColumn::make('pivot.is_scheduled')
+                    ->boolean()
+                    ->getStateUsing(function ($record) use ($salon) {
+                        $salonRelation = $record->salons->where('id', $salon->id)->first();
+                        return $salonRelation ? $salonRelation->pivot->is_featured : false;
+                    }),
+
+                Tables\Columns\IconColumn::make('is_published')
+                    ->label('Publié')
+                    ->boolean()
+                    ->getStateUsing(function ($record) use ($salon) {
+                        $salonRelation = $record->salons->where('id', $salon->id)->first();
+                        return $salonRelation ? $salonRelation->pivot->is_published : false;
+                    }),
+
+                Tables\Columns\IconColumn::make('is_scheduled')
                     ->label('Programmé')
-                    ->boolean(),
-                Tables\Columns\TextColumn::make('pivot.start_datetime')
-                    ->label('Début')
+                    ->boolean()
+                    ->getStateUsing(function ($record) use ($salon) {
+                        $salonRelation = $record->salons->where('id', $salon->id)->first();
+                        return $salonRelation ? $salonRelation->pivot->is_scheduled : false;
+                    }),
+
+                Tables\Columns\TextColumn::make('published_at')
+                    ->label('Date de publication')
                     ->dateTime()
+                    ->getStateUsing(function ($record) use ($salon) {
+                        $salonRelation = $record->salons->where('id', $salon->id)->first();
+                        return $salonRelation ? $salonRelation->pivot->published_at : null;
+                    }),
+
+                Tables\Columns\TextColumn::make('display_order')
+                    ->label('Ordre')
+                    ->getStateUsing(function ($record) use ($salon) {
+                        $salonRelation = $record->salons->where('id', $salon->id)->first();
+                        return $salonRelation ? $salonRelation->pivot->display_order : 0;
+                    })
                     ->sortable(),
-                Tables\Columns\TextColumn::make('pivot.location')
-                    ->label('Lieu'),
-                Tables\Columns\TextColumn::make('pivot.day')
-                    ->label('Jour'),
             ])
             ->filters([
-                Tables\Filters\TernaryFilter::make('pivot.is_featured')
+                Tables\Filters\TernaryFilter::make('is_featured')
                     ->label('En avant')
                     ->queries(
                         true: fn(Builder $query) => $query->whereHas('salons', function ($q) use ($salon) {
@@ -158,7 +213,7 @@ class SalonArticleResource extends Resource
                         }),
                         blank: fn(Builder $query) => $query,
                     ),
-                Tables\Filters\TernaryFilter::make('pivot.is_scheduled')
+                Tables\Filters\TernaryFilter::make('is_scheduled')
                     ->label('Programmé')
                     ->queries(
                         true: fn(Builder $query) => $query->whereHas('salons', function ($q) use ($salon) {
@@ -169,52 +224,83 @@ class SalonArticleResource extends Resource
                         }),
                         blank: fn(Builder $query) => $query,
                     ),
-                Tables\Filters\SelectFilter::make('pivot.day')
-                    ->label('Jour')
-                    ->options([
-                        'J1' => 'Jour 1',
-                        'J2' => 'Jour 2',
-                        'J3' => 'Jour 3',
-                        'Tous' => 'Tous les jours',
-                    ])
+                Tables\Filters\SelectFilter::make('category_id')
+                    ->label('Catégorie')
+                    ->options(function () use ($salon) {
+                        return Categorie::where('salon_id', $salon->id)->pluck('name', 'id')->toArray();
+                    })
                     ->query(function (Builder $query, array $data) use ($salon) {
                         if (empty($data['value'])) {
                             return $query;
                         }
 
                         return $query->whereHas('salons', function ($q) use ($salon, $data) {
-                            $q->where('salon_id', $salon->id)->where('day', $data['value']);
+                            $q->where('salon_id', $salon->id)->where('category_id', $data['value']);
                         });
                     }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->mutateRecordDataUsing(function (array $data, Model $record) use ($salon) {
-                        // Récupérer les données pivot
-                        $pivotRecord = $record->salons()->where('salon_id', $salon->id)->first();
+                    ->fillForm(function (Model $record) use ($salon): array {
+                        // Récupérer les données pivot pour pré-remplir le formulaire
+                        $salonRelation = $record->salons()->where('salon_id', $salon->id)->first();
 
-                        if (!$pivotRecord) {
-                            return $data;
+                        if (!$salonRelation) {
+                            return [];
                         }
 
-                        $pivot = $pivotRecord->pivot;
+                        $pivot = $salonRelation->pivot;
 
-                        // Fusionner les données pivot avec les données de l'article
-                        foreach ($pivot->getAttributes() as $key => $value) {
-                            if (!in_array($key, ['id', 'article_id', 'salon_id', 'created_at', 'updated_at'])) {
-                                $data[$key] = $value;
-                            }
-                        }
-
-                        return $data;
+                        return [
+                            'category_id' => $pivot->category_id,
+                            'availability_id' => $pivot->availability_id,
+                            'is_featured' => (bool) $pivot->is_featured,
+                            'is_published' => (bool) $pivot->is_published,
+                            'published_at' => $pivot->published_at,
+                            'is_scheduled' => (bool) $pivot->is_scheduled,
+                            'is_cancelled' => (bool) $pivot->is_cancelled,
+                            'schedule_content' => $pivot->schedule_content,
+                            'display_order' => (int) $pivot->display_order,
+                        ];
                     })
-                    ->using(function (Model $record, array $data) use ($salon) {
+                    ->action(function (Model $record, array $data) use ($salon): void {
                         // Mettre à jour uniquement les données pivot
-                        $pivotData = collect($data)->except(['id', 'title', 'slug', 'content', 'featured_image', 'gallery', 'videos', 'social_links'])->toArray();
+                        $pivotData = collect($data)->only([
+                            'category_id',
+                            'availability_id',
+                            'is_featured',
+                            'is_published',
+                            'published_at',
+                            'is_scheduled',
+                            'is_cancelled',
+                            'schedule_content',
+                            'display_order',
+                        ])->filter(function ($value) {
+                            return $value !== null;
+                        })->toArray();
+
+                        // Convertir les booléens en entiers pour la base de données
+                        if (isset($pivotData['is_featured'])) {
+                            $pivotData['is_featured'] = (int) $pivotData['is_featured'];
+                        }
+                        if (isset($pivotData['is_published'])) {
+                            $pivotData['is_published'] = (int) $pivotData['is_published'];
+                        }
+                        if (isset($pivotData['is_scheduled'])) {
+                            $pivotData['is_scheduled'] = (int) $pivotData['is_scheduled'];
+                        }
+                        if (isset($pivotData['is_cancelled'])) {
+                            $pivotData['is_cancelled'] = (int) $pivotData['is_cancelled'];
+                        }
 
                         $record->salons()->updateExistingPivot($salon->id, $pivotData);
 
-                        return $record;
+                        // Notification de succès
+                        \Filament\Notifications\Notification::make()
+                            ->success()
+                            ->title('Article mis à jour')
+                            ->body('Les modifications ont été sauvegardées avec succès.')
+                            ->send();
                     }),
                 Tables\Actions\DeleteAction::make()
                     ->requiresConfirmation()

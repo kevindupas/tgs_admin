@@ -49,16 +49,21 @@ class Salon extends Model
         'practical_info',
     ];
 
+    // public function getFilamentAvatarUrl(): ?string
+    // {
+    //     return $this->eventLogo ? $this->eventLogo->getUrl('thumb') : null;
+    // }
+
     // public function eventLogo()
     // {
     //     return $this->belongsTo(Media::class, 'event_logo');
     // }
 
     // // Et modifier getFilamentAvatarUrl pour utiliser cette relation
-    // public function getFilamentAvatarUrl(): ?string
-    // {
-    //     return $this->eventLogo ? $this->eventLogo->getUrl('thumb') : null;
-    // }
+    public function getFilamentAvatarUrl(): ?string
+    {
+        return $this->eventLogo ? $this->eventLogo->getUrl('thumb') : null;
+    }
 
     public function users(): BelongsToMany
     {
@@ -107,6 +112,9 @@ class Salon extends Model
                 'is_featured',
                 'is_published',
                 'published_at',
+                'content_salon',
+                'gallery_salon',
+                'videos_salon',
                 'is_scheduled',
                 'is_cancelled',
                 'schedule_content',
