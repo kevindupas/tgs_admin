@@ -127,8 +127,7 @@ class SalonArticleResource extends Resource
                                     ->schema([
                                         Forms\Components\TextInput::make('url')
                                             ->label('URL de la vidéo')
-                                            ->url()
-                                            ->required(),
+                                            ->url(),
                                         Forms\Components\TextInput::make('title')
                                             ->label('Titre de la vidéo')
                                             ->maxLength(255),
@@ -335,6 +334,9 @@ class SalonArticleResource extends Resource
                             'videos_salon' => $pivot->videos_salon ? json_decode($pivot->videos_salon, true) : [],
                         ];
                     })
+                    // Dans la méthode table() de SalonArticleResource.php
+                    // Remplacez cette partie dans Tables\Actions\EditAction::make()
+
                     ->action(function (Model $record, array $data) use ($salon): void {
                         // Mettre à jour uniquement les données pivot
                         $pivotData = collect($data)->only([
@@ -354,6 +356,15 @@ class SalonArticleResource extends Resource
                             return $value !== null;
                         })->toArray();
 
+                        // Convertir les arrays en JSON pour les colonnes JSON
+                        if (isset($pivotData['gallery_salon']) && is_array($pivotData['gallery_salon'])) {
+                            $pivotData['gallery_salon'] = json_encode($pivotData['gallery_salon']);
+                        }
+
+                        if (isset($pivotData['videos_salon']) && is_array($pivotData['videos_salon'])) {
+                            $pivotData['videos_salon'] = json_encode($pivotData['videos_salon']);
+                        }
+
                         // Convertir les booléens en entiers pour la base de données
                         if (isset($pivotData['is_featured'])) {
                             $pivotData['is_featured'] = (int) $pivotData['is_featured'];
@@ -366,14 +377,6 @@ class SalonArticleResource extends Resource
                         }
                         if (isset($pivotData['is_cancelled'])) {
                             $pivotData['is_cancelled'] = (int) $pivotData['is_cancelled'];
-                        }
-
-                        // Convertir les arrays en JSON pour la base de données
-                        if (isset($pivotData['gallery_salon']) && is_array($pivotData['gallery_salon'])) {
-                            $pivotData['gallery_salon'] = json_encode($pivotData['gallery_salon']);
-                        }
-                        if (isset($pivotData['videos_salon']) && is_array($pivotData['videos_salon'])) {
-                            $pivotData['videos_salon'] = json_encode($pivotData['videos_salon']);
                         }
 
                         $record->salons()->updateExistingPivot($salon->id, $pivotData);

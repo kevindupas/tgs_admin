@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('faqs', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('mini_content');
             $table->longText('content');
             $table->integer('order')->default(0);
             $table->unsignedBigInteger('salon_id');

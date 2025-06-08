@@ -41,10 +41,6 @@ class FaqResource extends Resource
                     ->default(0)
                     ->required()
                     ->helperText('Plus le nombre est petit, plus la FAQ apparaîtra en premier (0 = premier)'),
-                Forms\Components\Textarea::make('mini_content')
-                    ->label('Aperçu de la réponse')
-                    ->required()
-                    ->rows(3),
                 TiptapEditor::make('content')
                     ->label('Réponse complète')
                     ->required(),
@@ -65,9 +61,6 @@ class FaqResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label('Question')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('mini_content')
-                    ->label('Aperçu')
-                    ->limit(50),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Créé le')
                     ->dateTime()

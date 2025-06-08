@@ -57,6 +57,29 @@ class CreateSalonArticle extends CreateRecord
             'display_order' => 0,
         ], $pivotData);
 
+        // Convertir les arrays en JSON pour les colonnes JSON
+        if (isset($pivotData['gallery_salon']) && is_array($pivotData['gallery_salon'])) {
+            $pivotData['gallery_salon'] = json_encode($pivotData['gallery_salon']);
+        }
+
+        if (isset($pivotData['videos_salon']) && is_array($pivotData['videos_salon'])) {
+            $pivotData['videos_salon'] = json_encode($pivotData['videos_salon']);
+        }
+
+        // Convertir les booléens en entiers pour la base de données
+        if (isset($pivotData['is_featured'])) {
+            $pivotData['is_featured'] = (int) $pivotData['is_featured'];
+        }
+        if (isset($pivotData['is_published'])) {
+            $pivotData['is_published'] = (int) $pivotData['is_published'];
+        }
+        if (isset($pivotData['is_scheduled'])) {
+            $pivotData['is_scheduled'] = (int) $pivotData['is_scheduled'];
+        }
+        if (isset($pivotData['is_cancelled'])) {
+            $pivotData['is_cancelled'] = (int) $pivotData['is_cancelled'];
+        }
+
         // Associer l'article au salon avec les données pivot
         $article->salons()->attach($salon->id, $pivotData);
 

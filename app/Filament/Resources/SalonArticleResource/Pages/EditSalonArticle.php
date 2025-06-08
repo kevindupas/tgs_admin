@@ -41,6 +41,9 @@ class EditSalonArticle extends EditRecord
             'is_cancelled' => (bool) $pivot->is_cancelled,
             'schedule_content' => $pivot->schedule_content,
             'display_order' => (int) $pivot->display_order,
+            'content_salon' => $pivot->content_salon,
+            'gallery_salon' => $pivot->gallery_salon ? json_decode($pivot->gallery_salon, true) : [],
+            'videos_salon' => $pivot->videos_salon ? json_decode($pivot->videos_salon, true) : [],
         ]);
     }
 
@@ -64,6 +67,9 @@ class EditSalonArticle extends EditRecord
             'is_cancelled',
             'schedule_content',
             'display_order',
+            'content_salon',
+            'gallery_salon',
+            'videos_salon',
         ])->filter(function ($value) {
             return $value !== null;
         })->toArray();
@@ -82,6 +88,15 @@ class EditSalonArticle extends EditRecord
 
         // Préparer les données pivot (sans article_id)
         $pivotData = collect($data)->except(['article_id'])->toArray();
+
+        // Convertir les arrays en JSON pour les colonnes JSON
+        if (isset($pivotData['gallery_salon']) && is_array($pivotData['gallery_salon'])) {
+            $pivotData['gallery_salon'] = json_encode($pivotData['gallery_salon']);
+        }
+
+        if (isset($pivotData['videos_salon']) && is_array($pivotData['videos_salon'])) {
+            $pivotData['videos_salon'] = json_encode($pivotData['videos_salon']);
+        }
 
         // Convertir les booléens en entiers pour la base de données
         if (isset($pivotData['is_featured'])) {
