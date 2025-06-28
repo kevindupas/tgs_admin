@@ -100,7 +100,6 @@ class AdminPanelProvider extends PanelProvider
                 FilamentMediaLibrary::make()
                     ->navigationLabel('Manager les médias')
                     ->pageTitle('Manager les médias')
-                    // ->navigationSort(1)
                     ->mediaPickerModalWidth('7xl')
                     ->showUploadBoxByDefault()
                     ->thumbnailMediaConversion('thumb')

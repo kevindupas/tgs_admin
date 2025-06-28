@@ -1,4 +1,3 @@
-
 /* resources/css/tiptap/extensions.css */
 .tiptap-content {
     /* Styles pour les différentes tailles de police */
@@ -6,4 +5,14 @@
 
 .tiptap-content [style*="font-size"] {
     /* Assurer que les tailles de police sont respectées */
+    font-size: inherit !important;
+}
+
+/* Support pour toutes les tailles de police */
+.ProseMirror {
+    font-size: inherit;
+}
+
+.ProseMirror [style*="font-size"] {
+    font-size: inherit !important;
 }

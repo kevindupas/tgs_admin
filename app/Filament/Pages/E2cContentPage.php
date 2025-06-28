@@ -102,8 +102,6 @@ class E2cContentPage extends Page
         $e2cContent = E2cContent::firstOrCreate(
             ['salon_id' => $salon->id],
             [
-                'title' => 'Concours E2C',
-                'text' => '<p>Découvrez notre concours E2C...</p>',
                 'salon_id' => $salon->id,
             ]
         );

@@ -8,7 +8,6 @@ export default defineConfig({
                 'resources/css/app.css',
                 'resources/js/app.js',
                 'resources/css/filament/admin/theme.css',
-                'resources/js/tiptap/extensions.js',
                 'resources/css/tiptap/extensions.css',
             ],
             refresh: true,

@@ -18,8 +18,8 @@ return [
     */
     'profiles' => [
         'default' => [
-            'fontSize',
-            'heading',
+            'font-size',
+            // 'heading',
             'bullet-list',
             'ordered-list',
             'checked-list',
@@ -30,12 +30,12 @@ return [
             'italic',
             'strike',
             'underline',
-            'superscript',
-            'subscript',
-            'lead',
-            'small',
+            // 'superscript',
+            // 'subscript',
+            // 'lead',
+            // 'small',
             'color',
-            'highlight',
+            // 'highlight',
             'align-left',
             'align-center',
             'align-right',
@@ -52,8 +52,8 @@ return [
             'source',
             'blocks',
         ],
-        'simple' => ['fontSize', 'heading', 'hr', 'bullet-list', 'ordered-list', 'checked-list', '|', 'bold', 'italic', 'lead', 'small', '|', 'link', 'media'],
-        'minimal' => ['fontSize', 'bold', 'italic', 'link', 'bullet-list', 'ordered-list'],
+        'simple' => ['font-size', 'heading', 'hr', 'bullet-list', 'ordered-list', 'checked-list', '|', 'bold', 'italic', 'lead', 'small', '|', 'link', 'media'],
+        'minimal' => ['font-size', 'bold', 'italic', 'link', 'bullet-list', 'ordered-list'],
         'none' => [],
     ],
 
@@ -116,7 +116,7 @@ return [
     'disable_bubble_menus' => false,
     'disable_toolbar_menus' => false,
 
-    'bubble_menu_tools' => ['bold', 'italic', 'strike', 'underline', 'superscript', 'subscript', 'lead', 'small', 'link'],
+    'bubble_menu_tools' => ['font-size', 'color', 'bold', 'italic', 'strike', 'underline', 'link'],
     'floating_menu_tools' => ['media', 'grid-builder', 'details', 'table', 'oembed', 'code-block', 'blocks'],
 
     /*
@@ -125,16 +125,16 @@ return [
     |--------------------------------------------------------------------------
     |
     */
-    'extensions_script' => 'resources/js/tiptap/extensions.js',
-    'extensions_styles' => 'resources/css/tiptap/extensions.css',
-    'extensions' => [
-        [
-            'id' => 'fontSize',
-            'name' => 'Font Size',
-            'button' => 'filament-tiptap-editor::tools.font-size',
-            'parser' => \App\TiptapExtensions\FontSize::class,
-        ],
-    ],
+    // 'extensions_script' => 'resources/js/tiptap/extensions.js',
+    // 'extensions_styles' => 'resources/css/tiptap/extensions.css',
+    // 'extensions' => [
+    //     [
+    //         'id' => 'fontSize',
+    //         'name' => 'Font Size',
+    //         'button' => 'font-size-tool',
+    //         'parser' => \App\TiptapExtensions\FontSize::class,
+    //     ],
+    // ],
 
     /*
     |--------------------------------------------------------------------------
