@@ -13,6 +13,7 @@
         "awcodes/filament-tiptap-editor": "^3.5",
         "filament/filament": "^3.3",
         "laravel/framework": "^11.31",
+        "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "ralphjsmit/laravel-filament-media-library": "^3.9",
         "spatie/laravel-medialibrary": "^11.12"
