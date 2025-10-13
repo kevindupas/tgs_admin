@@ -75,11 +75,8 @@ Route::prefix('api/v1')->group(function () {
     // ===================
     // E2C PAR SALON
     // ===================
-    Route::get('/salons/{salon}/e2c', [E2cController::class, 'content']);
-    Route::get('/salons/{salon}/e2c/articles', [E2cController::class, 'articles']);
-    Route::get('/salons/{salon}/e2c/jury', [E2cController::class, 'jury']);
-    Route::get('/salons/{salon}/e2c/participants', [E2cController::class, 'participants']);
-    Route::get('/salons/{salon}/e2c/articles/{e2cArticle}', [E2cController::class, 'article']);
+    Route::get('/salons/{salon}/e2c', [E2cController::class, 'index']);
+    Route::get('/salons/{salon}/e2c/{e2cArticle}', [E2cController::class, 'show']);
 
     // ===================
     // PAGES SPÉCIALES PAR SALON

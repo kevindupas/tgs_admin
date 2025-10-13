@@ -11,29 +11,9 @@ use Illuminate\Http\JsonResponse;
 class E2cController extends Controller
 {
     /**
-     * Contenu E2C d'un salon
+     * Toutes les données E2C d'un salon (content, jury et participants)
      */
-    public function content(Salon $salon): JsonResponse
-    {
-        if (!$salon->e2c) {
-            return response()->json([
-                'success' => false,
-                'message' => 'E2C non activé pour ce salon'
-            ], 404);
-        }
-
-        $e2cContent = $salon->e2cContent;
-
-        return response()->json([
-            'success' => true,
-            'data' => $e2cContent
-        ]);
-    }
-
-    /**
-     * Tous les articles E2C d'un salon
-     */
-    public function articles(Request $request, Salon $salon): JsonResponse
+    public function index(Request $request, Salon $salon): JsonResponse
     {
         if (!$salon->e2c) {
             return response()->json([
@@ -48,58 +28,20 @@ class E2cController extends Controller
             $query->where('title', 'like', '%' . $request->search . '%');
         }
 
-        $articles = $query->ordered()->get();
-
         return response()->json([
             'success' => true,
-            'data' => $articles
+            'data' => [
+                'content' => $salon->e2cContent,
+                'jury' => $salon->e2cJury()->ordered()->get(),
+                'participants' => $salon->e2cParticipants()->ordered()->get(),
+            ]
         ]);
     }
 
     /**
-     * Articles du jury E2C
+     * Détail d'un article E2C spécifique
      */
-    public function jury(Salon $salon): JsonResponse
-    {
-        if (!$salon->e2c) {
-            return response()->json([
-                'success' => false,
-                'message' => 'E2C non activé pour ce salon'
-            ], 404);
-        }
-
-        $jury = $salon->e2cJury()->ordered()->get();
-
-        return response()->json([
-            'success' => true,
-            'data' => $jury
-        ]);
-    }
-
-    /**
-     * Articles des participants E2C
-     */
-    public function participants(Salon $salon): JsonResponse
-    {
-        if (!$salon->e2c) {
-            return response()->json([
-                'success' => false,
-                'message' => 'E2C non activé pour ce salon'
-            ], 404);
-        }
-
-        $participants = $salon->e2cParticipants()->ordered()->get();
-
-        return response()->json([
-            'success' => true,
-            'data' => $participants
-        ]);
-    }
-
-    /**
-     * Article E2C spécifique
-     */
-    public function article(Salon $salon, E2cArticle $e2cArticle): JsonResponse
+    public function show(Salon $salon, E2cArticle $e2cArticle): JsonResponse
     {
         if (!$salon->e2c) {
             return response()->json([
