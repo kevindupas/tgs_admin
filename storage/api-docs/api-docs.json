@@ -1,0 +1,311 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "TGS Admin API Documentation",
+        "description": "Documentation de l'API REST pour le système TGS Admin - Toulouse Game Show",
+        "contact": {
+            "email": "support@tgs.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8000",
+            "description": "Serveur de développement"
+        },
+        {
+            "url": "https://votre-domaine.com",
+            "description": "Serveur de production"
+        }
+    ],
+    "paths": {
+        "/api/api/v1/salons/{salon}/e2c": {
+            "get": {
+                "tags": [
+                    "E2C"
+                ],
+                "summary": "Récupérer toutes les données E2C (content, jury, participants)",
+                "description": "Retourne en un seul appel le contenu E2C, la liste des membres du jury et la liste des participants",
+                "operationId": "getE2CIndex",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "description": "ID du salon",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Recherche dans les titres des articles E2C",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "zelda"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Données E2C récupérées avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "content": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "logo": {
+                                                            "type": "string",
+                                                            "example": "https://..."
+                                                        },
+                                                        "title": {
+                                                            "type": "string",
+                                                            "example": "Escapade à Cosplay 2025"
+                                                        },
+                                                        "text": {
+                                                            "type": "string",
+                                                            "example": "<h2>Concours</h2>"
+                                                        },
+                                                        "salon_id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "jury": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "title": {
+                                                                "type": "string",
+                                                                "example": "Marie - Jury"
+                                                            },
+                                                            "slug": {
+                                                                "type": "string",
+                                                                "example": "marie-jury"
+                                                            },
+                                                            "content": {
+                                                                "type": "string"
+                                                            },
+                                                            "featured_image": {
+                                                                "type": "string"
+                                                            },
+                                                            "gallery": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "videos": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "social_links": {
+                                                                "type": "object"
+                                                            },
+                                                            "is_jury": {
+                                                                "type": "boolean",
+                                                                "example": true
+                                                            },
+                                                            "display_order": {
+                                                                "type": "integer"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "participants": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer"
+                                                            },
+                                                            "title": {
+                                                                "type": "string"
+                                                            },
+                                                            "is_jury": {
+                                                                "type": "boolean",
+                                                                "example": false
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "E2C non activé pour ce salon",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "E2C non activé pour ce salon"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/api/v1/salons/{salon}/e2c/{e2cArticle}": {
+            "get": {
+                "tags": [
+                    "E2C"
+                ],
+                "summary": "Récupérer le détail d'un article E2C",
+                "description": "Retourne les informations complètes d'un article E2C spécifique (jury ou participant)",
+                "operationId": "getE2CArticle",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "description": "ID du salon",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "e2cArticle",
+                        "in": "path",
+                        "description": "ID de l'article E2C",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Article E2C récupéré avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "title": {
+                                                    "type": "string",
+                                                    "example": "Marie - Jury"
+                                                },
+                                                "slug": {
+                                                    "type": "string",
+                                                    "example": "marie-jury"
+                                                },
+                                                "content": {
+                                                    "type": "string"
+                                                },
+                                                "featured_image": {
+                                                    "type": "string"
+                                                },
+                                                "gallery": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "videos": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "social_links": {
+                                                    "type": "object"
+                                                },
+                                                "is_jury": {
+                                                    "type": "boolean"
+                                                },
+                                                "display_order": {
+                                                    "type": "integer"
+                                                },
+                                                "salon_id": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Article E2C non trouvé",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "E2C",
+            "description": "Endpoints pour Escapade à Cosplay"
+        }
+    ]
+}

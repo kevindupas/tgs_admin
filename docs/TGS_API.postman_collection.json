@@ -1,0 +1,423 @@
+{
+  "info": {
+    "name": "TGS Admin API",
+    "description": "Collection Postman pour l'API TGS Admin",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000/api/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "salon_id",
+      "value": "1",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Salons",
+      "item": [
+        {
+          "name": "Liste des salons",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/salons",
+              "host": ["{{base_url}}"],
+              "path": ["salons"]
+            }
+          }
+        },
+        {
+          "name": "Détail d'un salon",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/salons/{{salon_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["salons", "{{salon_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Statistiques d'un salon",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/salons/{{salon_id}}/stats",
+              "host": ["{{base_url}}"],
+              "path": ["salons", "{{salon_id}}", "stats"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "E2C (Escapade à Cosplay)",
+      "item": [
+        {
+          "name": "⭐ Toutes les données E2C",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/salons/{{salon_id}}/e2c",
+              "host": ["{{base_url}}"],
+              "path": ["salons", "{{salon_id}}", "e2c"]
+            },
+            "description": "Récupère en un seul appel : content, jury et participants"
+          }
+        },
+        {
+          "name": "Rechercher dans E2C",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/salons/{{salon_id}}/e2c?search=zelda",
+              "host": ["{{base_url}}"],
+              "path": ["salons", "{{salon_id}}", "e2c"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "zelda",
+                  "description": "Recherche dans les titres"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Détail d'un article E2C",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/salons/{{salon_id}}/e2c/1",
+              "host": ["{{base_url}}"],
+              "path": ["salons", "{{salon_id}}", "e2c", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Articles",
+      "item": [
+        {
+          "name": "Liste des articles",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/salons/{{salon_id}}/articles",
+              "host": ["{{base_url}}"],
+              "path": ["salons", "{{salon_id}}", "articles"]
+            }
+          }
+        },
+        {
+          "name": "Articles avec filtres",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/salons/{{salon_id}}/articles?featured=true&category=1",
+              "host": ["{{base_url}}"],
+              "path": ["salons", "{{salon_id}}", "articles"],
+              "query": [
+                {
+                  "key": "featured",
+                  "value": "true"
+                },
+                {
+                  "key": "category",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Articles mis en avant",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/salons/{{salon_id}}/articles/featured",
+              "host": ["{{base_url}}"],
+              "path": ["salons", "{{salon_id}}", "articles", "featured"]
+            }
+          }
+        },
+        {
+          "name": "Détail d'un article",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/salons/{{salon_id}}/articles/1",
+              "host": ["{{base_url}}"],
+              "path": ["salons", "{{salon_id}}", "articles", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Catégories",
+      "item": [
+        {
+          "name": "Liste des catégories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/salons/{{salon_id}}/categories",
+              "host": ["{{base_url}}"],
+              "path": ["salons", "{{salon_id}}", "categories"]
+            }
+          }
+        },
+        {
+          "name": "Détail d'une catégorie",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/salons/{{salon_id}}/categories/1",
+              "host": ["{{base_url}}"],
+              "path": ["salons", "{{salon_id}}", "categories", "1"]
+            }
+          }
+        },
+        {
+          "name": "Articles d'une catégorie",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/salons/{{salon_id}}/categories/1/articles",
+              "host": ["{{base_url}}"],
+              "path": ["salons", "{{salon_id}}", "categories", "1", "articles"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Disponibilités",
+      "item": [
+        {
+          "name": "Liste des disponibilités",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/salons/{{salon_id}}/availabilities",
+              "host": ["{{base_url}}"],
+              "path": ["salons", "{{salon_id}}", "availabilities"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "FAQs",
+      "item": [
+        {
+          "name": "Liste des FAQs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/salons/{{salon_id}}/faqs",
+              "host": ["{{base_url}}"],
+              "path": ["salons", "{{salon_id}}", "faqs"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Infos Pratiques",
+      "item": [
+        {
+          "name": "Liste des infos pratiques",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/salons/{{salon_id}}/practical-infos",
+              "host": ["{{base_url}}"],
+              "path": ["salons", "{{salon_id}}", "practical-infos"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Partenaires",
+      "item": [
+        {
+          "name": "Liste des partenaires",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/salons/{{salon_id}}/partners",
+              "host": ["{{base_url}}"],
+              "path": ["salons", "{{salon_id}}", "partners"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Prix des Billets",
+      "item": [
+        {
+          "name": "Liste des tarifs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/salons/{{salon_id}}/ticket-prices",
+              "host": ["{{base_url}}"],
+              "path": ["salons", "{{salon_id}}", "ticket-prices"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Pages Spéciales",
+      "item": [
+        {
+          "name": "Presse",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/salons/{{salon_id}}/presse",
+              "host": ["{{base_url}}"],
+              "path": ["salons", "{{salon_id}}", "presse"]
+            }
+          }
+        },
+        {
+          "name": "Photos Invités",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/salons/{{salon_id}}/photos-invites",
+              "host": ["{{base_url}}"],
+              "path": ["salons", "{{salon_id}}", "photos-invites"]
+            }
+          }
+        },
+        {
+          "name": "Devenir Exposant",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/salons/{{salon_id}}/become-exhibitor",
+              "host": ["{{base_url}}"],
+              "path": ["salons", "{{salon_id}}", "become-exhibitor"]
+            }
+          }
+        },
+        {
+          "name": "Devenir Bénévole",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/salons/{{salon_id}}/become-staff",
+              "host": ["{{base_url}}"],
+              "path": ["salons", "{{salon_id}}", "become-staff"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tags",
+      "item": [
+        {
+          "name": "Liste des tags",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/tags",
+              "host": ["{{base_url}}"],
+              "path": ["tags"]
+            }
+          }
+        },
+        {
+          "name": "Rechercher un tag",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/tags/search?q=gaming",
+              "host": ["{{base_url}}"],
+              "path": ["tags", "search"],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "gaming"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Contenus Billetterie",
+      "item": [
+        {
+          "name": "Liste des contenus",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/ticket-contents",
+              "host": ["{{base_url}}"],
+              "path": ["ticket-contents"]
+            }
+          }
+        },
+        {
+          "name": "Rechercher un contenu",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/ticket-contents/search?q=conditions",
+              "host": ["{{base_url}}"],
+              "path": ["ticket-contents", "search"],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "conditions"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

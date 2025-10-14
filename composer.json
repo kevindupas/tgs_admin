@@ -11,6 +11,7 @@
     "require": {
         "php": "^8.2",
         "awcodes/filament-tiptap-editor": "^3.5",
+        "darkaonline/l5-swagger": "^9.0",
         "filament/filament": "^3.3",
         "laravel/framework": "^11.31",
         "laravel/sanctum": "^4.0",
