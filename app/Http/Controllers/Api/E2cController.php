@@ -19,7 +19,7 @@ class E2cController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/api/api/v1/salons/{salon}/e2c",
+     *     path="/api/v1/salons/{salon}/e2c",
      *     summary="Récupérer toutes les données E2C (content, jury, participants)",
      *     description="Retourne en un seul appel le contenu E2C, la liste des membres du jury et la liste des participants",
      *     operationId="getE2CIndex",
@@ -122,7 +122,7 @@ class E2cController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/api/v1/salons/{salon}/e2c/{e2cArticle}",
+     *     path="/api/v1/salons/{salon}/e2c/{e2cArticle}",
      *     summary="Récupérer le détail d'un article E2C",
      *     description="Retourne les informations complètes d'un article E2C spécifique (jury ou participant)",
      *     operationId="getE2CArticle",

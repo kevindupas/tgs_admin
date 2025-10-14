@@ -19,7 +19,866 @@
         }
     ],
     "paths": {
-        "/api/api/v1/salons/{salon}/e2c": {
+        "/api/v1/salons/{salon}/articles": {
+            "get": {
+                "tags": [
+                    "Articles"
+                ],
+                "summary": "Liste des articles d'un salon",
+                "description": "Récupère tous les articles publiés d'un salon avec filtres optionnels",
+                "operationId": "getSalonArticles",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "description": "ID du salon",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "category_id",
+                        "in": "query",
+                        "description": "Filtrer par catégorie",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "availability_id",
+                        "in": "query",
+                        "description": "Filtrer par disponibilité",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "is_featured",
+                        "in": "query",
+                        "description": "Filtrer les articles mis en avant",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "example": true
+                        }
+                    },
+                    {
+                        "name": "is_scheduled",
+                        "in": "query",
+                        "description": "Filtrer les articles programmés",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "example": true
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Recherche dans le titre",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "Zelda"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Nombre d'éléments par page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 15
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Articles récupérés avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer"
+                                                },
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer"
+                                                            },
+                                                            "title": {
+                                                                "type": "string"
+                                                            },
+                                                            "content": {
+                                                                "type": "string"
+                                                            },
+                                                            "featured_image": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/salons/{salon}/articles/{article}": {
+            "get": {
+                "tags": [
+                    "Articles"
+                ],
+                "summary": "Détail d'un article",
+                "description": "Récupère les informations complètes d'un article spécifique",
+                "operationId": "getSalonArticle",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "description": "ID du salon",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "article",
+                        "in": "path",
+                        "description": "ID de l'article",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Article récupéré avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "content": {
+                                                    "type": "string"
+                                                },
+                                                "featured_image": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Article non trouvé ou non publié"
+                    }
+                }
+            }
+        },
+        "/api/v1/salons/{salon}/articles/featured": {
+            "get": {
+                "tags": [
+                    "Articles"
+                ],
+                "summary": "Articles mis en avant",
+                "description": "Récupère tous les articles mis en avant d'un salon",
+                "operationId": "getFeaturedArticles",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "description": "ID du salon",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Articles mis en avant récupérés",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "title": {
+                                                        "type": "string"
+                                                    },
+                                                    "featured_image": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/salons/{salon}/articles/scheduled": {
+            "get": {
+                "tags": [
+                    "Articles"
+                ],
+                "summary": "Articles programmés",
+                "description": "Récupère tous les articles programmés (avec horaire) d'un salon",
+                "operationId": "getScheduledArticles",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "description": "ID du salon",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Articles programmés récupérés",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "title": {
+                                                        "type": "string"
+                                                    },
+                                                    "is_scheduled": {
+                                                        "type": "boolean",
+                                                        "example": true
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/salons/{salon}/articles/published": {
+            "get": {
+                "tags": [
+                    "Articles"
+                ],
+                "summary": "Articles publiés",
+                "description": "Récupère tous les articles publiés d'un salon avec pagination",
+                "operationId": "getPublishedArticles",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "description": "ID du salon",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Articles publiés récupérés",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer"
+                                                },
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer"
+                                                            },
+                                                            "title": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/articles": {
+            "get": {
+                "tags": [
+                    "Articles"
+                ],
+                "summary": "Liste de tous les articles",
+                "description": "Récupère tous les articles (toutes éditions confondues)",
+                "operationId": "getAllArticles",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Recherche dans le titre",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "Mario"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Nombre d'éléments par page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 15
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Articles récupérés avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/articles/{article}": {
+            "get": {
+                "tags": [
+                    "Articles"
+                ],
+                "summary": "Détail d'un article global",
+                "description": "Récupère un article avec tous ses salons associés",
+                "operationId": "getArticle",
+                "parameters": [
+                    {
+                        "name": "article",
+                        "in": "path",
+                        "description": "ID de l'article",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Article récupéré avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/salons/{salon}/availabilities": {
+            "get": {
+                "tags": [
+                    "Availabilities"
+                ],
+                "summary": "Liste des disponibilités",
+                "description": "Récupère toutes les disponibilités d'un salon",
+                "operationId": "getSalonAvailabilities",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "description": "ID du salon",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Disponibilités récupérées avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Vendredi"
+                                                    },
+                                                    "salon_id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/salons/{salon}/availabilities/{availability}": {
+            "get": {
+                "tags": [
+                    "Availabilities"
+                ],
+                "summary": "Détail d'une disponibilité",
+                "description": "Récupère les informations d'une disponibilité spécifique",
+                "operationId": "getSalonAvailability",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "description": "ID du salon",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "availability",
+                        "in": "path",
+                        "description": "ID de la disponibilité",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Disponibilité récupérée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "salon_id": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Disponibilité non trouvée"
+                    }
+                }
+            }
+        },
+        "/api/v1/salons/{salon}/availabilities/{availability}/articles": {
+            "get": {
+                "tags": [
+                    "Availabilities"
+                ],
+                "summary": "Articles d'une disponibilité",
+                "description": "Récupère tous les articles avec une disponibilité spécifique",
+                "operationId": "getAvailabilityArticles",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "description": "ID du salon",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "availability",
+                        "in": "path",
+                        "description": "ID de la disponibilité",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Articles de la disponibilité récupérés",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "title": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Disponibilité non trouvée"
+                    }
+                }
+            }
+        },
+        "/api/v1/salons/{salon}/categories": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Liste des catégories",
+                "description": "Récupère toutes les catégories d'un salon",
+                "operationId": "getSalonCategories",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "description": "ID du salon",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Catégories récupérées avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Invités"
+                                                    },
+                                                    "salon_id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/salons/{salon}/categories/{category}": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Détail d'une catégorie",
+                "description": "Récupère les informations d'une catégorie spécifique",
+                "operationId": "getSalonCategory",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "description": "ID du salon",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "category",
+                        "in": "path",
+                        "description": "ID de la catégorie",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Catégorie récupérée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "salon_id": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Catégorie non trouvée"
+                    }
+                }
+            }
+        },
+        "/api/v1/salons/{salon}/categories/{category}/articles": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Articles d'une catégorie",
+                "description": "Récupère tous les articles appartenant à une catégorie",
+                "operationId": "getCategoryArticles",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "description": "ID du salon",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "category",
+                        "in": "path",
+                        "description": "ID de la catégorie",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Articles de la catégorie récupérés",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "title": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Catégorie non trouvée"
+                    }
+                }
+            }
+        },
+        "/api/v1/salons/{salon}/e2c": {
             "get": {
                 "tags": [
                     "E2C"
@@ -185,7 +1044,7 @@
                 }
             }
         },
-        "/api/api/v1/salons/{salon}/e2c/{e2cArticle}": {
+        "/api/v1/salons/{salon}/e2c/{e2cArticle}": {
             "get": {
                 "tags": [
                     "E2C"
@@ -300,12 +1159,1390 @@
                     }
                 }
             }
+        },
+        "/api/v1/salons/{salon}/faqs": {
+            "get": {
+                "tags": [
+                    "FAQs"
+                ],
+                "summary": "Liste des FAQs",
+                "description": "Récupère toutes les questions fréquentes d'un salon",
+                "operationId": "getSalonFaqs",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "description": "ID du salon",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "FAQs récupérées avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Comment venir au salon ?"
+                                                    },
+                                                    "content": {
+                                                        "type": "string"
+                                                    },
+                                                    "order": {
+                                                        "type": "integer"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/salons/{salon}/faqs/{faq}": {
+            "get": {
+                "tags": [
+                    "FAQs"
+                ],
+                "summary": "Détail d'une FAQ",
+                "description": "Récupère les informations d'une question fréquente spécifique",
+                "operationId": "getSalonFaq",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "description": "ID du salon",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "faq",
+                        "in": "path",
+                        "description": "ID de la FAQ",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "FAQ récupérée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "content": {
+                                                    "type": "string"
+                                                },
+                                                "order": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "FAQ non trouvée"
+                    }
+                }
+            }
+        },
+        "/api/v1/salons/{salon}/presse": {
+            "get": {
+                "tags": [
+                    "Pages"
+                ],
+                "summary": "Page Presse",
+                "description": "Récupère le contenu de la page presse d'un salon",
+                "operationId": "getPressePage",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "description": "ID du salon",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Page presse récupérée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page presse non activée"
+                    }
+                }
+            }
+        },
+        "/api/v1/salons/{salon}/photos-invites": {
+            "get": {
+                "tags": [
+                    "Pages"
+                ],
+                "summary": "Page Photos Invités",
+                "description": "Récupère le contenu de la page photos invités d'un salon",
+                "operationId": "getPhotosInvitesPage",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "description": "ID du salon",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Page photos invités récupérée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page photos invités non activée"
+                    }
+                }
+            }
+        },
+        "/api/v1/salons/{salon}/become-exhibitor": {
+            "get": {
+                "tags": [
+                    "Pages"
+                ],
+                "summary": "Page Devenir Exposant",
+                "description": "Récupère le contenu de la page devenir exposant d'un salon",
+                "operationId": "getBecomeExhibitorPage",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "description": "ID du salon",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Page devenir exposant récupérée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page devenir exposant non activée"
+                    }
+                }
+            }
+        },
+        "/api/v1/salons/{salon}/become-staff": {
+            "get": {
+                "tags": [
+                    "Pages"
+                ],
+                "summary": "Page Devenir Staff",
+                "description": "Récupère le contenu de la page devenir staff d'un salon",
+                "operationId": "getBecomeStaffPage",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "description": "ID du salon",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Page devenir staff récupérée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Page devenir staff non activée"
+                    }
+                }
+            }
+        },
+        "/api/v1/salons/{salon}/partners": {
+            "get": {
+                "tags": [
+                    "Partners"
+                ],
+                "summary": "Liste des partenaires",
+                "description": "Récupère tous les partenaires d'un salon",
+                "operationId": "getSalonPartners",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "description": "ID du salon",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Partenaires récupérés avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Nintendo"
+                                                    },
+                                                    "logo": {
+                                                        "type": "string"
+                                                    },
+                                                    "url": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/salons/{salon}/partners/{partner}": {
+            "get": {
+                "tags": [
+                    "Partners"
+                ],
+                "summary": "Détail d'un partenaire",
+                "description": "Récupère les informations d'un partenaire spécifique",
+                "operationId": "getSalonPartner",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "description": "ID du salon",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "partner",
+                        "in": "path",
+                        "description": "ID du partenaire",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Partenaire récupéré avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "logo": {
+                                                    "type": "string"
+                                                },
+                                                "url": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Partenaire non trouvé"
+                    }
+                }
+            }
+        },
+        "/api/v1/salons/{salon}/practical-infos": {
+            "get": {
+                "tags": [
+                    "Practical Infos"
+                ],
+                "summary": "Liste des infos pratiques",
+                "description": "Récupère toutes les informations pratiques d'un salon",
+                "operationId": "getSalonPracticalInfos",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "description": "ID du salon",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Infos pratiques récupérées avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Horaires"
+                                                    },
+                                                    "mini_content": {
+                                                        "type": "string"
+                                                    },
+                                                    "content": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/salons/{salon}/practical-infos/{practicalInfo}": {
+            "get": {
+                "tags": [
+                    "Practical Infos"
+                ],
+                "summary": "Détail d'une info pratique",
+                "description": "Récupère les informations d'une info pratique spécifique",
+                "operationId": "getSalonPracticalInfo",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "description": "ID du salon",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "practicalInfo",
+                        "in": "path",
+                        "description": "ID de l'info pratique",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info pratique récupérée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "mini_content": {
+                                                    "type": "string"
+                                                },
+                                                "content": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Info pratique non trouvée"
+                    }
+                }
+            }
+        },
+        "/api/v1/salons": {
+            "get": {
+                "tags": [
+                    "Salons"
+                ],
+                "summary": "Liste de tous les salons",
+                "description": "Récupère la liste de tous les salons avec pagination et filtres optionnels",
+                "operationId": "getSalons",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Recherche dans le nom du salon",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "Toulouse"
+                        }
+                    },
+                    {
+                        "name": "upcoming",
+                        "in": "query",
+                        "description": "Filtrer les salons à venir",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "example": true
+                        }
+                    },
+                    {
+                        "name": "past",
+                        "in": "query",
+                        "description": "Filtrer les salons passés",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "example": false
+                        }
+                    },
+                    {
+                        "name": "e2c",
+                        "in": "query",
+                        "description": "Filtrer les salons avec E2C activé",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "example": true
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Nombre d'éléments par page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 15
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Liste des salons récupérée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "Toulouse Game Show 2025"
+                                                            },
+                                                            "edition": {
+                                                                "type": "string",
+                                                                "example": "2025"
+                                                            },
+                                                            "event_date": {
+                                                                "type": "string",
+                                                                "example": "2025-11-15"
+                                                            },
+                                                            "e2c": {
+                                                                "type": "boolean",
+                                                                "example": true
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/salons/{salon}": {
+            "get": {
+                "tags": [
+                    "Salons"
+                ],
+                "summary": "Détail d'un salon",
+                "description": "Récupère les informations complètes d'un salon spécifique",
+                "operationId": "getSalon",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "description": "ID du salon",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Détails du salon récupérés avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Toulouse Game Show 2025"
+                                                },
+                                                "edition": {
+                                                    "type": "string",
+                                                    "example": "2025"
+                                                },
+                                                "event_date": {
+                                                    "type": "string",
+                                                    "example": "2025-11-15"
+                                                },
+                                                "ticket_link": {
+                                                    "type": "string"
+                                                },
+                                                "e2c": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Salon non trouvé"
+                    }
+                }
+            }
+        },
+        "/api/v1/salons/{salon}/stats": {
+            "get": {
+                "tags": [
+                    "Salons"
+                ],
+                "summary": "Statistiques d'un salon",
+                "description": "Récupère les statistiques (nombre d'articles, catégories, etc.) d'un salon",
+                "operationId": "getSalonStats",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "description": "ID du salon",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Statistiques récupérées avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "total_articles": {
+                                                    "type": "integer",
+                                                    "example": 10
+                                                },
+                                                "total_categories": {
+                                                    "type": "integer",
+                                                    "example": 5
+                                                },
+                                                "total_partners": {
+                                                    "type": "integer",
+                                                    "example": 8
+                                                },
+                                                "total_faqs": {
+                                                    "type": "integer",
+                                                    "example": 12
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/tags": {
+            "get": {
+                "tags": [
+                    "Tags"
+                ],
+                "summary": "Liste de tous les tags",
+                "description": "Récupère tous les tags avec pagination et recherche optionnelle",
+                "operationId": "getAllTags",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Recherche dans le nom du tag",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "cosplay"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Nombre d'éléments par page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 50
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tags récupérés avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer"
+                                                },
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer"
+                                                            },
+                                                            "name": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/tags/{tag}": {
+            "get": {
+                "tags": [
+                    "Tags"
+                ],
+                "summary": "Détail d'un tag",
+                "description": "Récupère les informations d'un tag spécifique",
+                "operationId": "getTag",
+                "parameters": [
+                    {
+                        "name": "tag",
+                        "in": "path",
+                        "description": "ID du tag",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tag récupéré avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/tags/search": {
+            "get": {
+                "tags": [
+                    "Tags"
+                ],
+                "summary": "Recherche de tags",
+                "description": "Recherche de tags pour autocomplete (limite de 20 résultats)",
+                "operationId": "searchTags",
+                "parameters": [
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "description": "Terme de recherche",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "jeu"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Résultats de recherche",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "name": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/ticket-contents": {
+            "get": {
+                "tags": [
+                    "Ticket Contents"
+                ],
+                "summary": "Liste de tous les contenus de billets",
+                "description": "Récupère tous les contenus de billets avec pagination et recherche optionnelle",
+                "operationId": "getAllTicketContents",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Recherche dans le nom du contenu",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "accès"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Nombre d'éléments par page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 50
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Contenus de billets récupérés avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer"
+                                                },
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer"
+                                                            },
+                                                            "name": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/ticket-contents/{ticketContent}": {
+            "get": {
+                "tags": [
+                    "Ticket Contents"
+                ],
+                "summary": "Détail d'un contenu de billet",
+                "description": "Récupère les informations d'un contenu de billet spécifique",
+                "operationId": "getTicketContent",
+                "parameters": [
+                    {
+                        "name": "ticketContent",
+                        "in": "path",
+                        "description": "ID du contenu de billet",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Contenu de billet récupéré avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/ticket-contents/search": {
+            "get": {
+                "tags": [
+                    "Ticket Contents"
+                ],
+                "summary": "Recherche de contenus de billets",
+                "description": "Recherche de contenus de billets pour autocomplete (limite de 20 résultats)",
+                "operationId": "searchTicketContents",
+                "parameters": [
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "description": "Terme de recherche",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "vip"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Résultats de recherche",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "name": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/salons/{salon}/ticket-prices": {
+            "get": {
+                "tags": [
+                    "Ticket Prices"
+                ],
+                "summary": "Liste des prix de billets",
+                "description": "Récupère tous les prix de billets d'un salon avec leurs contenus",
+                "operationId": "getSalonTicketPrices",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "description": "ID du salon",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Prix de billets récupérés avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Pass 1 jour"
+                                                    },
+                                                    "price": {
+                                                        "type": "number",
+                                                        "example": 15
+                                                    },
+                                                    "contents": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "integer"
+                                                        }
+                                                    },
+                                                    "ticket_contents": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "object"
+                                                        }
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/salons/{salon}/ticket-prices/{ticketPrice}": {
+            "get": {
+                "tags": [
+                    "Ticket Prices"
+                ],
+                "summary": "Détail d'un prix de billet",
+                "description": "Récupère les informations d'un prix de billet spécifique avec ses contenus",
+                "operationId": "getSalonTicketPrice",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "description": "ID du salon",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "ticketPrice",
+                        "in": "path",
+                        "description": "ID du prix de billet",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Prix de billet récupéré avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "price": {
+                                                    "type": "number"
+                                                },
+                                                "contents": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "integer"
+                                                    }
+                                                },
+                                                "ticket_contents": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Prix de billet non trouvé"
+                    }
+                }
+            }
         }
     },
     "tags": [
         {
+            "name": "Articles",
+            "description": "Gestion des articles"
+        },
+        {
+            "name": "Availabilities",
+            "description": "Gestion des disponibilités par salon"
+        },
+        {
+            "name": "Categories",
+            "description": "Gestion des catégories par salon"
+        },
+        {
+            "name": "Salons",
+            "description": "Gestion des salons"
+        },
+        {
             "name": "E2C",
             "description": "Endpoints pour Escapade à Cosplay"
+        },
+        {
+            "name": "FAQs",
+            "description": "Gestion des FAQs par salon"
+        },
+        {
+            "name": "Pages",
+            "description": "Pages spéciales par salon"
+        },
+        {
+            "name": "Partners",
+            "description": "Gestion des partenaires par salon"
+        },
+        {
+            "name": "Practical Infos",
+            "description": "Gestion des informations pratiques par salon"
+        },
+        {
+            "name": "Tags",
+            "description": "Gestion des tags/filtres globaux"
+        },
+        {
+            "name": "Ticket Contents",
+            "description": "Gestion des contenus de billets globaux"
+        },
+        {
+            "name": "Ticket Prices",
+            "description": "Gestion des prix de billets par salon"
         }
     ]
 }

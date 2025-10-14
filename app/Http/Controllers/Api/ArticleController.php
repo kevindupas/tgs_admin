@@ -7,10 +7,96 @@ use App\Models\Article;
 use App\Models\Salon;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use OpenApi\Annotations as OA;
 
+/**
+ * @OA\Tag(
+ *     name="Articles",
+ *     description="Gestion des articles par salon"
+ * )
+ */
 class ArticleController extends Controller
 {
     /**
+     * @OA\Get(
+     *     path="/api/v1/salons/{salon}/articles",
+     *     summary="Liste des articles d'un salon",
+     *     description="Récupère tous les articles publiés d'un salon avec filtres optionnels",
+     *     operationId="getSalonArticles",
+     *     tags={"Articles"},
+     *     @OA\Parameter(
+     *         name="salon",
+     *         in="path",
+     *         description="ID du salon",
+     *         required=true,
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Parameter(
+     *         name="category_id",
+     *         in="query",
+     *         description="Filtrer par catégorie",
+     *         required=false,
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Parameter(
+     *         name="availability_id",
+     *         in="query",
+     *         description="Filtrer par disponibilité",
+     *         required=false,
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Parameter(
+     *         name="is_featured",
+     *         in="query",
+     *         description="Filtrer les articles mis en avant",
+     *         required=false,
+     *         @OA\Schema(type="boolean", example=true)
+     *     ),
+     *     @OA\Parameter(
+     *         name="is_scheduled",
+     *         in="query",
+     *         description="Filtrer les articles programmés",
+     *         required=false,
+     *         @OA\Schema(type="boolean", example=true)
+     *     ),
+     *     @OA\Parameter(
+     *         name="search",
+     *         in="query",
+     *         description="Recherche dans le titre",
+     *         required=false,
+     *         @OA\Schema(type="string", example="Zelda")
+     *     ),
+     *     @OA\Parameter(
+     *         name="per_page",
+     *         in="query",
+     *         description="Nombre d'éléments par page",
+     *         required=false,
+     *         @OA\Schema(type="integer", example=15)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Articles récupérés avec succès",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 @OA\Property(property="current_page", type="integer"),
+     *                 @OA\Property(
+     *                     property="data",
+     *                     type="array",
+     *                     @OA\Items(
+     *                         @OA\Property(property="id", type="integer"),
+     *                         @OA\Property(property="title", type="string"),
+     *                         @OA\Property(property="content", type="string"),
+     *                         @OA\Property(property="featured_image", type="string")
+     *                     )
+     *                 )
+     *             )
+     *         )
+     *     )
+     * )
+     *
      * Articles d'un salon spécifique
      */
     public function index(Request $request, Salon $salon): JsonResponse
@@ -61,6 +147,47 @@ class ArticleController extends Controller
     }
 
     /**
+     * @OA\Get(
+     *     path="/api/v1/salons/{salon}/articles/{article}",
+     *     summary="Détail d'un article",
+     *     description="Récupère les informations complètes d'un article spécifique",
+     *     operationId="getSalonArticle",
+     *     tags={"Articles"},
+     *     @OA\Parameter(
+     *         name="salon",
+     *         in="path",
+     *         description="ID du salon",
+     *         required=true,
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Parameter(
+     *         name="article",
+     *         in="path",
+     *         description="ID de l'article",
+     *         required=true,
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Article récupéré avec succès",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 @OA\Property(property="id", type="integer"),
+     *                 @OA\Property(property="title", type="string"),
+     *                 @OA\Property(property="content", type="string"),
+     *                 @OA\Property(property="featured_image", type="string")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Article non trouvé ou non publié"
+     *     )
+     * )
+     *
      * Article spécifique d'un salon
      */
     public function show(Salon $salon, Article $article): JsonResponse
@@ -92,6 +219,37 @@ class ArticleController extends Controller
     }
 
     /**
+     * @OA\Get(
+     *     path="/api/v1/salons/{salon}/articles/featured",
+     *     summary="Articles mis en avant",
+     *     description="Récupère tous les articles mis en avant d'un salon",
+     *     operationId="getFeaturedArticles",
+     *     tags={"Articles"},
+     *     @OA\Parameter(
+     *         name="salon",
+     *         in="path",
+     *         description="ID du salon",
+     *         required=true,
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Articles mis en avant récupérés",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 @OA\Items(
+     *                     @OA\Property(property="id", type="integer"),
+     *                     @OA\Property(property="title", type="string"),
+     *                     @OA\Property(property="featured_image", type="string")
+     *                 )
+     *             )
+     *         )
+     *     )
+     * )
+     *
      * Articles mis en avant d'un salon
      */
     public function featured(Salon $salon): JsonResponse
@@ -113,6 +271,37 @@ class ArticleController extends Controller
     }
 
     /**
+     * @OA\Get(
+     *     path="/api/v1/salons/{salon}/articles/scheduled",
+     *     summary="Articles programmés",
+     *     description="Récupère tous les articles programmés (avec horaire) d'un salon",
+     *     operationId="getScheduledArticles",
+     *     tags={"Articles"},
+     *     @OA\Parameter(
+     *         name="salon",
+     *         in="path",
+     *         description="ID du salon",
+     *         required=true,
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Articles programmés récupérés",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 @OA\Items(
+     *                     @OA\Property(property="id", type="integer"),
+     *                     @OA\Property(property="title", type="string"),
+     *                     @OA\Property(property="is_scheduled", type="boolean", example=true)
+     *                 )
+     *             )
+     *         )
+     *     )
+     * )
+     *
      * Articles programmés d'un salon
      */
     public function scheduled(Salon $salon): JsonResponse
@@ -135,6 +324,41 @@ class ArticleController extends Controller
     }
 
     /**
+     * @OA\Get(
+     *     path="/api/v1/salons/{salon}/articles/published",
+     *     summary="Articles publiés",
+     *     description="Récupère tous les articles publiés d'un salon avec pagination",
+     *     operationId="getPublishedArticles",
+     *     tags={"Articles"},
+     *     @OA\Parameter(
+     *         name="salon",
+     *         in="path",
+     *         description="ID du salon",
+     *         required=true,
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Articles publiés récupérés",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 @OA\Property(property="current_page", type="integer"),
+     *                 @OA\Property(
+     *                     property="data",
+     *                     type="array",
+     *                     @OA\Items(
+     *                         @OA\Property(property="id", type="integer"),
+     *                         @OA\Property(property="title", type="string")
+     *                     )
+     *                 )
+     *             )
+     *         )
+     *     )
+     * )
+     *
      * Articles publiés d'un salon
      */
     public function published(Salon $salon): JsonResponse
@@ -155,6 +379,36 @@ class ArticleController extends Controller
     }
 
     /**
+     * @OA\Get(
+     *     path="/api/v1/articles",
+     *     summary="Liste de tous les articles",
+     *     description="Récupère tous les articles (toutes éditions confondues)",
+     *     operationId="getAllArticles",
+     *     tags={"Articles"},
+     *     @OA\Parameter(
+     *         name="search",
+     *         in="query",
+     *         description="Recherche dans le titre",
+     *         required=false,
+     *         @OA\Schema(type="string", example="Mario")
+     *     ),
+     *     @OA\Parameter(
+     *         name="per_page",
+     *         in="query",
+     *         description="Nombre d'éléments par page",
+     *         required=false,
+     *         @OA\Schema(type="integer", example=15)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Articles récupérés avec succès",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="data", type="object")
+     *         )
+     *     )
+     * )
+     *
      * Tous les articles (global, sans salon spécifique)
      */
     public function globalIndex(Request $request): JsonResponse
@@ -176,6 +430,29 @@ class ArticleController extends Controller
     }
 
     /**
+     * @OA\Get(
+     *     path="/api/v1/articles/{article}",
+     *     summary="Détail d'un article global",
+     *     description="Récupère un article avec tous ses salons associés",
+     *     operationId="getArticle",
+     *     tags={"Articles"},
+     *     @OA\Parameter(
+     *         name="article",
+     *         in="path",
+     *         description="ID de l'article",
+     *         required=true,
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Article récupéré avec succès",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="data", type="object")
+     *         )
+     *     )
+     * )
+     *
      * Article global (avec tous ses salons associés)
      */
     public function globalShow(Article $article): JsonResponse

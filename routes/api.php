@@ -16,7 +16,7 @@ use App\Http\Controllers\Api\TagController;
 use App\Http\Controllers\Api\TicketContentController;
 
 // Toutes les routes sont en GET et publiques
-Route::prefix('api/v1')->group(function () {
+Route::prefix('v1')->group(function () {
 
     // ===================
     // SALONS

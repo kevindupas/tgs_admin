@@ -1,7 +1,7 @@
 # 📚 Documentation API - Toulouse Game Show Admin
 
 **Version:** 1.0.0
-**Base URL:** `http://votre-domaine.com/api/api/v1`
+**Base URL:** `http://votre-domaine.com/api/v1`
 **Format de réponse:** JSON
 **Méthode HTTP:** GET uniquement
 
@@ -49,7 +49,7 @@ Cette API REST permet d'accéder aux données du système TGS Admin. Toutes les 
 ### URL de base
 ```
 Production: https://votre-domaine.com/api/api/v1
-Développement: http://127.0.0.1:8000/api/api/v1
+Développement: http://127.0.0.1:8000/api/v1
 ```
 
 ### Headers recommandés
@@ -652,7 +652,7 @@ npm install axios
 ```javascript
 import axios from 'axios';
 
-const API_BASE_URL = 'http://127.0.0.1:8000/api/api/v1';
+const API_BASE_URL = 'http://127.0.0.1:8000/api/v1';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -1370,10 +1370,10 @@ const ArticleCard = React.memo(({ article }) => {
 ### 4. Environnement de développement vs production
 ```javascript
 // .env.development
-REACT_APP_API_URL=http://127.0.0.1:8000/api/api/v1
+REACT_APP_API_URL=http://127.0.0.1:8000/api/v1
 
 // .env.production
-REACT_APP_API_URL=https://votre-domaine.com/api/api/v1
+REACT_APP_API_URL=https://votre-domaine.com/api/v1
 
 // api.js
 const API_BASE_URL = process.env.REACT_APP_API_URL;
