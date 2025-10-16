@@ -54,6 +54,17 @@ class E2cArticleResource extends Resource
                                     ->default(false)
                                     ->helperText('Activez si cette personne fait partie du jury'),
 
+                                Forms\Components\TextInput::make('photographer')
+                                    ->label('Photographe')
+                                    ->maxLength(255)
+                                    ->helperText('Nom du photographe de l\'image à la une'),
+
+                                Forms\Components\TextInput::make('photographer_link')
+                                    ->label('Lien du photographe')
+                                    ->url()
+                                    ->maxLength(255)
+                                    ->helperText('URL du profil du photographe (Instagram, site web, etc.)'),
+
                                 Forms\Components\TextInput::make('display_order')
                                     ->label('Ordre d\'affichage')
                                     ->integer()

@@ -16,6 +16,8 @@ class E2cArticle extends Model
         'gallery',
         'videos',
         'social_links',
+        'photographer',
+        'photographer_link',
         'is_jury',
         'display_order',
         'salon_id'

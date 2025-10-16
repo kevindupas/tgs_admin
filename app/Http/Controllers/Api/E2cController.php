@@ -67,6 +67,8 @@ class E2cController extends Controller
      *                         @OA\Property(property="gallery", type="array", @OA\Items(type="string")),
      *                         @OA\Property(property="videos", type="array", @OA\Items(type="string")),
      *                         @OA\Property(property="social_links", type="object"),
+     *                         @OA\Property(property="photographer", type="string", example="Jean Dupont Photography"),
+     *                         @OA\Property(property="photographer_link", type="string", example="https://instagram.com/jeandupont_photo"),
      *                         @OA\Property(property="is_jury", type="boolean", example=true),
      *                         @OA\Property(property="display_order", type="integer")
      *                     )
@@ -159,6 +161,8 @@ class E2cController extends Controller
      *                 @OA\Property(property="gallery", type="array", @OA\Items(type="string")),
      *                 @OA\Property(property="videos", type="array", @OA\Items(type="string")),
      *                 @OA\Property(property="social_links", type="object"),
+     *                 @OA\Property(property="photographer", type="string", example="Jean Dupont Photography"),
+     *                 @OA\Property(property="photographer_link", type="string", example="https://instagram.com/jeandupont_photo"),
      *                 @OA\Property(property="is_jury", type="boolean"),
      *                 @OA\Property(property="display_order", type="integer"),
      *                 @OA\Property(property="salon_id", type="integer")

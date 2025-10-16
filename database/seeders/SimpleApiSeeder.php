@@ -135,17 +135,80 @@ class SimpleApiSeeder extends Seeder
         ]);
 
         $e2cData = [
-            ['title' => 'Marie - Jury', 'content' => '<p>Cosplayeuse pro</p>', 'is_jury' => true],
-            ['title' => 'Jean - Jury', 'content' => '<p>Expert props</p>', 'is_jury' => true],
-            ['title' => 'Participant 1 - Zelda', 'content' => '<p>Cosplay Zelda</p>', 'is_jury' => false],
-            ['title' => 'Participant 2 - Iron Man', 'content' => '<p>Armure Iron Man</p>', 'is_jury' => false],
+            [
+                'title' => 'Marie - Jury',
+                'content' => '<p>Cosplayeuse professionnelle depuis 10 ans</p>',
+                'is_jury' => true,
+                'photographer' => 'Jean Dupont Photography',
+                'photographer_link' => 'https://instagram.com/jeandupont_photo',
+                'social_links' => [
+                    'facebook' => 'https://facebook.com/marie.cosplay',
+                    'instagram' => 'https://instagram.com/marie_cosplay',
+                    'twitter' => 'https://twitter.com/marie_cosplay',
+                    'youtube' => 'https://youtube.com/@mariecosplay',
+                    'tiktok' => 'https://tiktok.com/@marie_cosplay',
+                    'website' => 'https://marie-cosplay.com',
+                    'wikipedia' => 'https://wikipedia.org/wiki/Marie_Cosplay',
+                    'twitch' => 'https://twitch.tv/marie_cosplay',
+                ]
+            ],
+            [
+                'title' => 'Jean - Jury',
+                'content' => '<p>Expert en fabrication de props et armures</p>',
+                'is_jury' => true,
+                'photographer' => 'Studio Photo TGS',
+                'photographer_link' => 'https://studiophotostgs.com',
+                'social_links' => [
+                    'facebook' => 'https://facebook.com/jean.props',
+                    'instagram' => 'https://instagram.com/jean_props',
+                    'twitter' => 'https://twitter.com/jean_props',
+                    'youtube' => 'https://youtube.com/@jeanprops',
+                    'tiktok' => 'https://tiktok.com/@jean_props',
+                    'website' => 'https://jeanprops-workshop.com',
+                    'wikipedia' => 'https://wikipedia.org/wiki/Jean_Props',
+                    'twitch' => 'https://twitch.tv/jeanprops',
+                ]
+            ],
+            [
+                'title' => 'Participant 1 - Zelda',
+                'content' => '<p>Cosplay de la Princesse Zelda - Breath of the Wild</p>',
+                'is_jury' => false,
+                'photographer' => 'Marie Dubois',
+                'photographer_link' => 'https://instagram.com/marie_dubois_photos',
+                'social_links' => [
+                    'facebook' => 'https://facebook.com/zelda.cosplayer',
+                    'instagram' => 'https://instagram.com/zelda_cosplay',
+                    'twitter' => 'https://twitter.com/zelda_cosplay',
+                    'youtube' => 'https://youtube.com/@zeldacosplay',
+                    'tiktok' => 'https://tiktok.com/@zelda_cosplay',
+                    'website' => 'https://zelda-cosplay-portfolio.com',
+                    'wikipedia' => 'https://wikipedia.org/wiki/Zelda_Cosplay',
+                    'twitch' => 'https://twitch.tv/zelda_cosplay',
+                ]
+            ],
+            [
+                'title' => 'Participant 2 - Iron Man',
+                'content' => '<p>Armure Iron Man Mark 50 entièrement fabriquée à la main</p>',
+                'is_jury' => false,
+                'photographer' => 'PhotoCon Studio',
+                'photographer_link' => 'https://instagram.com/photocon_studio',
+                'social_links' => [
+                    'facebook' => 'https://facebook.com/ironman.armor',
+                    'instagram' => 'https://instagram.com/ironman_armor',
+                    'twitter' => 'https://twitter.com/ironman_armor',
+                    'youtube' => 'https://youtube.com/@ironmanarmor',
+                    'tiktok' => 'https://tiktok.com/@ironman_armor',
+                    'website' => 'https://ironman-armor-cosplay.com',
+                    'wikipedia' => 'https://wikipedia.org/wiki/Iron_Man_Cosplay',
+                    'twitch' => 'https://twitch.tv/ironman_armor',
+                ]
+            ],
         ];
 
         foreach ($e2cData as $index => $data) {
             E2cArticle::create(array_merge($data, [
                 'salon_id' => $salon->id,
                 'featured_image' => 'https://via.placeholder.com/600x800?text=' . urlencode($data['title']),
-                'social_links' => ['instagram' => 'https://instagram.com/example'],
                 'display_order' => $index + 1,
             ]));
         }

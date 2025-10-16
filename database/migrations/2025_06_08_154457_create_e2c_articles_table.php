@@ -20,6 +20,8 @@ return new class extends Migration
             $table->json('gallery')->nullable();
             $table->json('videos')->nullable();
             $table->json('social_links')->nullable();
+            $table->string('photographer')->nullable();
+            $table->string('photographer_link')->nullable();
             $table->boolean('is_jury')->default(false);
             $table->integer('display_order')->default(0);
             $table->unsignedBigInteger('salon_id');
