@@ -104,18 +104,20 @@ class E2cController extends Controller
             ], 404);
         }
 
-        $query = $salon->e2cArticles();
+        $juryQuery = $salon->e2cJury()->ordered();
+        $participantsQuery = $salon->e2cParticipants()->ordered();
 
         if ($request->has('search')) {
-            $query->where('title', 'like', '%' . $request->search . '%');
+            $juryQuery->where('title', 'like', '%' . $request->search . '%');
+            $participantsQuery->where('title', 'like', '%' . $request->search . '%');
         }
 
         return response()->json([
             'success' => true,
             'data' => [
                 'content' => $salon->e2cContent,
-                'jury' => $salon->e2cJury()->ordered()->get(),
-                'participants' => $salon->e2cParticipants()->ordered()->get(),
+                'jury' => $juryQuery->get(),
+                'participants' => $participantsQuery->get(),
             ]
         ]);
     }
