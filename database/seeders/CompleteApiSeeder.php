@@ -30,43 +30,55 @@ class CompleteApiSeeder extends Seeder
     {
         $this->command->info('🚀 Démarrage du seeding complet...');
 
-        // 1. Créer un salon
-        $salon = $this->createSalon();
-
-        // 2. Créer des catégories
-        $categories = $this->createCategories($salon);
-
-        // 3. Créer des disponibilités
-        $availabilities = $this->createAvailabilities($salon);
-
-        // 4. Créer des tags
+        // Créer les tags globaux une seule fois
         $tags = $this->createTags();
-
-        // 5. Créer des articles
-        $articles = $this->createArticles($salon, $categories, $availabilities, $tags);
-
-        // 6. Créer des FAQs
-        $this->createFaqs($salon);
-
-        // 7. Créer des infos pratiques
-        $this->createPracticalInfos($salon);
-
-        // 8. Créer des partenaires
-        $this->createPartners($salon);
-
-        // 9. Créer des prix de billets
-        $this->createTicketPrices($salon);
-
-        // 10. Créer le contenu E2C
-        $this->createE2cContent($salon);
-
-        // 11. Créer les pages spéciales
-        $this->createSpecialPages($salon);
-
-        // 12. Créer des ticket contents
         $this->createTicketContents();
 
-        $this->command->info('✅ Seeding terminé avec succès !');
+        // Créer 3 salons avec leurs données
+        $salonsData = [
+            [
+                'name' => 'Toulouse Game Show 2023',
+                'edition' => '2023',
+                'color' => '#4A90E2',
+                'date' => '2023-11-10',
+                'e2c' => true,
+            ],
+            [
+                'name' => 'Toulouse Game Show 2024',
+                'edition' => '2024',
+                'color' => '#E94B3C',
+                'date' => '2024-11-15',
+                'e2c' => true,
+            ],
+            [
+                'name' => 'Toulouse Game Show 2025',
+                'edition' => '2025',
+                'color' => '#FF6B35',
+                'date' => '2025-11-15',
+                'e2c' => true,
+            ],
+        ];
+
+        foreach ($salonsData as $salonData) {
+            $this->command->info("📅 Création du salon: {$salonData['name']}");
+
+            $salon = $this->createSalon($salonData);
+            $categories = $this->createCategories($salon);
+            $availabilities = $this->createAvailabilities($salon);
+            $this->createArticles($salon, $categories, $availabilities, $tags);
+            $this->createFaqs($salon);
+            $this->createPracticalInfos($salon);
+            $this->createPartners($salon);
+            $this->createTicketPrices($salon);
+
+            if ($salonData['e2c']) {
+                $this->createE2cContent($salon);
+            }
+
+            $this->createSpecialPages($salon);
+        }
+
+        $this->command->info('✅ Seeding terminé avec succès ! 3 salons créés.');
     }
 
     private function createSalon(): Salon

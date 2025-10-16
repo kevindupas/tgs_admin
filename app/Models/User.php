@@ -67,16 +67,16 @@ class User extends Authenticatable implements FilamentUser, HasDefaultTenant, Ha
 
     public function canAccessTenant(Model $tenant): bool
     {
-        return $this->salons->contains($tenant);
+        return true; // Tous les utilisateurs ont accès à tous les salons
     }
 
     public function getTenants(Panel $panel): array|\Illuminate\Database\Eloquent\Collection
     {
-        return $this->salons ?? [];
+        return Salon::all(); // Retourne tous les salons existants
     }
 
     public function getDefaultTenant(Panel $panel): ?Model
     {
-        return $this->salons()->first();
+        return Salon::first(); // Retourne le premier salon disponible
     }
 }
