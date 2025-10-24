@@ -30,6 +30,11 @@ class E2cArticle extends Model
         'is_jury' => 'boolean',
     ];
 
+    protected $hidden = [
+        'featured_image',
+        'gallery',
+    ];
+
     protected $appends = [
         'featured_image_url',
         'gallery_urls',
