@@ -30,6 +30,11 @@ class E2cArticle extends Model
         'is_jury' => 'boolean',
     ];
 
+    protected $appends = [
+        'featured_image_url',
+        'gallery_urls',
+    ];
+
     protected static function booted()
     {
         static::creating(function ($article) {
@@ -64,5 +69,48 @@ class E2cArticle extends Model
     public function scopeOrdered($query)
     {
         return $query->orderBy('display_order')->orderBy('created_at');
+    }
+
+    // Accessors pour transformer les IDs de médias en URLs
+    public function getFeaturedImageUrlAttribute(): ?string
+    {
+        if (!$this->featured_image) {
+            return null;
+        }
+
+        // Si c'est déjà une URL complète, la retourner telle quelle
+        if (filter_var($this->featured_image, FILTER_VALIDATE_URL)) {
+            return $this->featured_image;
+        }
+
+        // Si c'est un ID numérique, récupérer l'URL depuis Spatie Media Library
+        if (is_numeric($this->featured_image)) {
+            $media = \Spatie\MediaLibrary\MediaCollections\Models\Media::find($this->featured_image);
+            return $media ? $media->getUrl() : null;
+        }
+
+        return $this->featured_image;
+    }
+
+    public function getGalleryUrlsAttribute(): array
+    {
+        if (!$this->gallery || !is_array($this->gallery)) {
+            return [];
+        }
+
+        return array_map(function ($item) {
+            // Si c'est déjà une URL complète, la retourner telle quelle
+            if (filter_var($item, FILTER_VALIDATE_URL)) {
+                return $item;
+            }
+
+            // Si c'est un ID numérique, récupérer l'URL depuis Spatie Media Library
+            if (is_numeric($item)) {
+                $media = \Spatie\MediaLibrary\MediaCollections\Models\Media::find($item);
+                return $media ? $media->getUrl() : $item;
+            }
+
+            return $item;
+        }, $this->gallery);
     }
 }
